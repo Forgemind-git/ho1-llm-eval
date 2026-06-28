@@ -1,129 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Sample 05 — Marketing Copy Benchmark | HO1</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#F8F9FA; color:#1a1a2e; }
-:root { --color:#1D4ED8; }
-header { background:var(--color); color:#fff; padding:36px 32px 28px; }
-header .back { font-size:13px; opacity:.75; text-decoration:none; color:#fff; display:inline-flex; align-items:center; gap:6px; margin-bottom:14px; }
-header .badge { font-size:12px; font-weight:700; letter-spacing:.08em; opacity:.75; text-transform:uppercase; margin-bottom:6px; }
-header h1 { font-size:24px; font-weight:800; margin-bottom:6px; }
-header p { font-size:14px; opacity:.85; max-width:640px; line-height:1.6; }
-.container { max-width:860px; margin:0 auto; padding:32px 24px 60px; }
-.section { background:#fff; border-radius:10px; box-shadow:0 1px 6px rgba(0,0,0,.08); padding:24px 28px; margin-bottom:24px; }
-.section h2 { font-size:16px; font-weight:700; color:var(--color); margin-bottom:16px; border-bottom:2px solid #EEF2FF; padding-bottom:10px; }
-.prompt-box { background:#F0F4FF; border-left:4px solid var(--color); padding:14px 18px; border-radius:4px; font-size:14px; line-height:1.7; color:#1e293b; white-space:pre-wrap; font-family:inherit; }
-table { width:100%; border-collapse:collapse; font-size:14px; }
-table th { background:#EEF2FF; color:var(--color); font-weight:700; padding:10px 14px; text-align:left; }
-table td { padding:10px 14px; border-bottom:1px solid #E5E7EB; color:#374151; }
-table tr:last-child td { border-bottom:none; }
-ol { padding-left:22px; }
-ol li { font-size:14px; color:#374151; margin-bottom:10px; line-height:1.6; }
-.step-label { display:inline-block; background:var(--color); color:#fff; font-size:11px; font-weight:700; border-radius:12px; padding:2px 9px; margin-right:6px; }
-.sub-note { background:#FFF7ED; border-left:4px solid #F59E0B; padding:12px 16px; border-radius:4px; font-size:13px; color:#92400E; margin-bottom:16px; line-height:1.6; }
-.scorecard { display:grid; gap:16px; }
-.criterion { border:1px solid #E5E7EB; border-radius:8px; padding:14px 18px; }
-.criterion-label { font-size:13px; font-weight:600; color:#111827; margin-bottom:10px; }
-.radio-group { display:flex; gap:8px; flex-wrap:wrap; }
-.radio-group label { display:flex; align-items:center; gap:5px; font-size:13px; color:#374151; cursor:pointer; background:#F3F4F6; padding:5px 12px; border-radius:20px; border:1px solid #E5E7EB; }
-.radio-group input[type=radio] { accent-color:var(--color); }
-.radio-group label:has(input:checked) { background:#EEF2FF; border-color:var(--color); color:var(--color); font-weight:600; }
-.score-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-top:20px; padding-top:16px; border-top:2px solid #E5E7EB; }
-.score-display { font-size:22px; font-weight:800; color:var(--color); }
-.score-display span { font-size:13px; font-weight:400; color:#6B7280; }
-.model-tabs { display:flex; gap:10px; margin-bottom:16px; }
-.model-tab { flex:1; text-align:center; padding:8px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; border:2px solid #E5E7EB; background:#fff; color:#6B7280; }
-.model-tab.active { background:var(--color); color:#fff; border-color:var(--color); }
-.comp-table { width:100%; border-collapse:collapse; font-size:14px; }
-.comp-table th { background:#1e293b; color:#fff; padding:10px 14px; text-align:left; font-size:13px; }
-.comp-table td { padding:10px 14px; border-bottom:1px solid #E5E7EB; }
-.comp-table td[contenteditable=true] { background:#FAFAFA; }
-.comp-table td[contenteditable=true]:focus { background:#EEF2FF; outline:2px solid var(--color); }
-.comp-table tr:last-child td { border-bottom:none; font-weight:700; }
-.dl-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:var(--color); color:#fff; border:none; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer; margin-top:16px; }
-code { background:#F3F4F6; padding:2px 7px; border-radius:4px; font-size:12.5px; font-family:'SF Mono','Fira Code',monospace; color:#374151; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sample 05 — Email Drafting | HO1 Starter</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#F8F9FA; color:#1a1a2e; }
+    :root { --color:#1D4ED8; }
+    header { background:var(--color); color:#fff; padding:36px 32px 28px; }
+    header .back { font-size:13px; opacity:.75; text-decoration:none; color:#fff; display:inline-flex; align-items:center; gap:6px; margin-bottom:14px; }
+    header .back:hover { opacity:1; }
+    header .badge { font-size:12px; font-weight:700; letter-spacing:.08em; opacity:.75; text-transform:uppercase; margin-bottom:6px; }
+    header h1 { font-size:24px; font-weight:800; margin-bottom:6px; }
+    header p { font-size:14px; opacity:.85; max-width:640px; line-height:1.6; }
+    .container { max-width:860px; margin:0 auto; padding:32px 24px 60px; }
+    .section { background:#fff; border-radius:10px; box-shadow:0 1px 6px rgba(0,0,0,.08); padding:24px 28px; margin-bottom:24px; }
+    .section h2 { font-size:16px; font-weight:700; color:var(--color); margin-bottom:16px; border-bottom:2px solid #EEF2FF; padding-bottom:10px; }
+    .todo-note { background:#FEF3C7; border-left:4px solid #D97706; padding:12px 16px; border-radius:4px; font-size:13px; color:#92400E; margin-bottom:16px; line-height:1.6; }
+    textarea { width:100%; border:1px solid #D1D5DB; border-radius:6px; padding:12px 14px; font-size:13px; font-family:inherit; color:#374151; line-height:1.6; resize:vertical; }
+    textarea:focus { outline:2px solid var(--color); border-color:var(--color); }
+    .model-tabs { display:flex; gap:10px; margin-bottom:16px; }
+    .model-tab { flex:1; text-align:center; padding:8px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; border:2px solid #E5E7EB; background:#fff; color:#6B7280; }
+    .model-tab.active { background:var(--color); color:#fff; border-color:var(--color); }
+    .scorecard { display:grid; gap:16px; }
+    .criterion { border:1px solid #E5E7EB; border-radius:8px; padding:14px 18px; }
+    .criterion-label { font-size:13px; font-weight:600; color:#111827; margin-bottom:10px; }
+    .radio-group { display:flex; gap:8px; flex-wrap:wrap; }
+    .radio-group label { display:flex; align-items:center; gap:5px; font-size:13px; color:#374151; cursor:pointer; background:#F3F4F6; padding:5px 12px; border-radius:20px; border:1px solid #E5E7EB; }
+    .radio-group input[type=radio] { accent-color:var(--color); }
+    .radio-group label:has(input:checked) { background:#EEF2FF; border-color:var(--color); color:var(--color); font-weight:600; }
+    .score-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-top:20px; padding-top:16px; border-top:2px solid #E5E7EB; }
+    .score-display { font-size:22px; font-weight:800; color:var(--color); }
+    .score-display span { font-size:13px; font-weight:400; color:#6B7280; }
+    .winner-select { width:100%; padding:10px 14px; border:1px solid #D1D5DB; border-radius:6px; font-size:14px; color:#374151; margin-bottom:14px; }
+    .winner-select:focus { outline:2px solid var(--color); }
+    .dl-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:var(--color); color:#fff; border:none; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer; margin-top:16px; }
+    .dl-btn:hover { opacity:.88; }
+    table.comp-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:12px; }
+    .comp-table th { background:#1e293b; color:#fff; padding:10px 14px; text-align:left; }
+    .comp-table td { padding:10px 14px; border-bottom:1px solid #E5E7EB; color:#374151; }
+    .comp-table td[contenteditable=true] { background:#FAFAFA; min-width:80px; }
+    .comp-table td[contenteditable=true]:focus { background:#EEF2FF; outline:2px solid var(--color); }
+    .comp-table tr:last-child td { border-bottom:none; font-weight:700; }
 </style>
 </head>
 <body>
 <header>
   <a href="../../index.html" class="back">← Back to HO1</a>
-  <div class="badge">HO1 · Sample 05</div>
-  <h1>Marketing Copy Benchmark</h1>
-  <p>Compare how persuasively each model writes a 3-sentence executive-targeted marketing hook.</p>
+  <div class="badge">HO1 · Sample 05 · Starter</div>
+  <h1>Email Drafting</h1>
+  <p>You handle repetitive customer emails and want AI to draft the first reply. Take 15 common queries, have both models draft replies, then score tone, accuracy and edit-distance from your ideal.</p>
 </header>
+
 <div class="container">
+
+  <!-- Test Prompt -->
   <div class="section">
-    <h2>Problem Statement</h2>
-    <div class="prompt-box">Write a 3-sentence marketing hook for: an AI scheduling tool that cuts meeting-booking time by 80%. Target: busy executives. End with a clear call to action.</div>
+    <h2>Test Prompt</h2>
+    <div class="todo-note">Write the prompt you will paste into BOTH LM Studio and Claude.ai. Use the same prompt for both so the comparison is fair.</div>
+    <textarea id="test-prompt" rows="6" placeholder="[TODO: write your test prompt here — what will you give to both models?]"></textarea>
   </div>
+
+  <!-- LM Studio Output -->
   <div class="section">
-    <h2>What You're Measuring</h2>
-    <table>
-      <tr><th>Criterion</th><th>What to look for</th><th>Scale</th></tr>
-      <tr><td><strong>Persuasiveness</strong></td><td>Does it create genuine desire and urgency for a busy executive?</td><td>1–5</td></tr>
-      <tr><td><strong>Specific stat used</strong></td><td>Does the copy use the "80%" figure (not just generic claims)?</td><td>yes/no</td></tr>
-      <tr><td><strong>CTA present</strong></td><td>Is there a clear call-to-action in the final sentence?</td><td>yes/no</td></tr>
-      <tr><td><strong>Professional tone for executives</strong></td><td>Does the tone feel appropriate for C-suite / senior leader audience?</td><td>1–5</td></tr>
-    </table>
+    <h2>LM Studio — Raw Output</h2>
+    <div class="todo-note">Run your prompt in LM Studio. Paste the full response below before scoring.</div>
+    <textarea rows="8" placeholder="[TODO: paste LM Studio response here]"></textarea>
   </div>
+
+  <!-- Claude.ai Output -->
   <div class="section">
-    <h2>Run the Test</h2>
-    <div class="sub-note">No API key needed. Run this test manually in two tools and compare results.</div>
-    <ol>
-      <li><span class="step-label">LM Studio</span> Open LM Studio, load any model, go to the Chat tab.</li>
-      <li><span class="step-label">LM Studio</span> Paste the prompt above. Count sentences, check for "80%", identify the CTA, and assess the executive tone.</li>
-      <li><span class="step-label">Claude.ai</span> Open <a href="https://claude.ai" target="_blank">claude.ai</a> in a new tab, start a new conversation.</li>
-      <li><span class="step-label">Claude.ai</span> Paste the same prompt. Compare the quality and persuasiveness of the marketing copy.</li>
-      <li><span class="step-label">Score</span> Rate each model using the scorecard below.</li>
-    </ol>
+    <h2>Claude.ai — Raw Output</h2>
+    <div class="todo-note">Run the same prompt in Claude.ai. Paste the full response below before scoring.</div>
+    <textarea rows="8" placeholder="[TODO: paste Claude.ai response here]"></textarea>
   </div>
+
+  <!-- Scorecard -->
   <div class="section">
     <h2>Score Your Results</h2>
     <div class="model-tabs">
       <div class="model-tab active" id="tab-lm" onclick="switchTab('lm')">LM Studio</div>
       <div class="model-tab" id="tab-cl" onclick="switchTab('cl')">Claude.ai</div>
     </div>
-    <div id="scorecard-lm" class="scorecard">
-      <div class="criterion"><div class="criterion-label">1. Persuasiveness (1–5)</div><div class="radio-group"><label><input type="radio" name="lm-c1" value="1" onchange="calcScore('lm')"> 1</label><label><input type="radio" name="lm-c1" value="2" onchange="calcScore('lm')"> 2</label><label><input type="radio" name="lm-c1" value="3" onchange="calcScore('lm')"> 3</label><label><input type="radio" name="lm-c1" value="4" onchange="calcScore('lm')"> 4</label><label><input type="radio" name="lm-c1" value="5" onchange="calcScore('lm')"> 5</label></div></div>
-      <div class="criterion"><div class="criterion-label">2. Specific stat used — "80%" present (yes/no)</div><div class="radio-group"><label><input type="radio" name="lm-c2" value="5" onchange="calcScore('lm')"> Yes (5)</label><label><input type="radio" name="lm-c2" value="0" onchange="calcScore('lm')"> No (0)</label></div></div>
-      <div class="criterion"><div class="criterion-label">3. CTA present (yes/no)</div><div class="radio-group"><label><input type="radio" name="lm-c3" value="5" onchange="calcScore('lm')"> Yes (5)</label><label><input type="radio" name="lm-c3" value="0" onchange="calcScore('lm')"> No (0)</label></div></div>
-      <div class="criterion"><div class="criterion-label">4. Professional tone for executives (1–5)</div><div class="radio-group"><label><input type="radio" name="lm-c4" value="1" onchange="calcScore('lm')"> 1</label><label><input type="radio" name="lm-c4" value="2" onchange="calcScore('lm')"> 2</label><label><input type="radio" name="lm-c4" value="3" onchange="calcScore('lm')"> 3</label><label><input type="radio" name="lm-c4" value="4" onchange="calcScore('lm')"> 4</label><label><input type="radio" name="lm-c4" value="5" onchange="calcScore('lm')"> 5</label></div></div>
-      <div class="score-row"><div>LM Studio total</div><div class="score-display" id="lm-total">0 <span>/ 20</span></div></div>
-    </div>
-    <div id="scorecard-cl" class="scorecard" style="display:none">
-      <div class="criterion"><div class="criterion-label">1. Persuasiveness (1–5)</div><div class="radio-group"><label><input type="radio" name="cl-c1" value="1" onchange="calcScore('cl')"> 1</label><label><input type="radio" name="cl-c1" value="2" onchange="calcScore('cl')"> 2</label><label><input type="radio" name="cl-c1" value="3" onchange="calcScore('cl')"> 3</label><label><input type="radio" name="cl-c1" value="4" onchange="calcScore('cl')"> 4</label><label><input type="radio" name="cl-c1" value="5" onchange="calcScore('cl')"> 5</label></div></div>
-      <div class="criterion"><div class="criterion-label">2. Specific stat used — "80%" present (yes/no)</div><div class="radio-group"><label><input type="radio" name="cl-c2" value="5" onchange="calcScore('cl')"> Yes (5)</label><label><input type="radio" name="cl-c2" value="0" onchange="calcScore('cl')"> No (0)</label></div></div>
-      <div class="criterion"><div class="criterion-label">3. CTA present (yes/no)</div><div class="radio-group"><label><input type="radio" name="cl-c3" value="5" onchange="calcScore('cl')"> Yes (5)</label><label><input type="radio" name="cl-c3" value="0" onchange="calcScore('cl')"> No (0)</label></div></div>
-      <div class="criterion"><div class="criterion-label">4. Professional tone for executives (1–5)</div><div class="radio-group"><label><input type="radio" name="cl-c4" value="1" onchange="calcScore('cl')"> 1</label><label><input type="radio" name="cl-c4" value="2" onchange="calcScore('cl')"> 2</label><label><input type="radio" name="cl-c4" value="3" onchange="calcScore('cl')"> 3</label><label><input type="radio" name="cl-c4" value="4" onchange="calcScore('cl')"> 4</label><label><input type="radio" name="cl-c4" value="5" onchange="calcScore('cl')"> 5</label></div></div>
-      <div class="score-row"><div>Claude.ai total</div><div class="score-display" id="cl-total">0 <span>/ 20</span></div></div>
-    </div>
+    <div id="scorecard-lm" class="scorecard" data-model="lm" >
+<div class="criterion">
+  <div class="criterion-label">1. Correct solution proposed (yes / no)</div>
+  <div class="radio-group"><label><input type="radio" name="lm-c1" value="Yes" onchange="calcScore('lm')"> Yes</label><label><input type="radio" name="lm-c1" value="No" onchange="calcScore('lm')"> No</label></div>
+</div>
+<div class="criterion">
+  <div class="criterion-label">2. Tone matches brand (1–5)</div>
+  <div class="radio-group"><label><input type="radio" name="lm-c2" value="1" onchange="calcScore('lm')"> 1</label><label><input type="radio" name="lm-c2" value="2" onchange="calcScore('lm')"> 2</label><label><input type="radio" name="lm-c2" value="3" onchange="calcScore('lm')"> 3</label><label><input type="radio" name="lm-c2" value="4" onchange="calcScore('lm')"> 4</label><label><input type="radio" name="lm-c2" value="5" onchange="calcScore('lm')"> 5</label></div>
+</div>
+<div class="criterion">
+  <div class="criterion-label">3. Reply length appropriate (1–5)</div>
+  <div class="radio-group"><label><input type="radio" name="lm-c3" value="1" onchange="calcScore('lm')"> 1</label><label><input type="radio" name="lm-c3" value="2" onchange="calcScore('lm')"> 2</label><label><input type="radio" name="lm-c3" value="3" onchange="calcScore('lm')"> 3</label><label><input type="radio" name="lm-c3" value="4" onchange="calcScore('lm')"> 4</label><label><input type="radio" name="lm-c3" value="5" onchange="calcScore('lm')"> 5</label></div>
+</div>
+<div class="criterion">
+  <div class="criterion-label">4. Needs major edits (yes / no)</div>
+  <div class="radio-group"><label><input type="radio" name="lm-c4" value="Yes" onchange="calcScore('lm')"> Yes</label><label><input type="radio" name="lm-c4" value="No" onchange="calcScore('lm')"> No</label></div>
+</div>
+<div class="score-row">
+  <div>LM Studio — criteria answered</div>
+  <div class="score-display" id="lm-total">0 / 4 <span>criteria answered</span></div>
+</div>
+</div>
+    <div id="scorecard-cl" class="scorecard" data-model="cl" style="display:none">
+<div class="criterion">
+  <div class="criterion-label">1. Correct solution proposed (yes / no)</div>
+  <div class="radio-group"><label><input type="radio" name="cl-c1" value="Yes" onchange="calcScore('cl')"> Yes</label><label><input type="radio" name="cl-c1" value="No" onchange="calcScore('cl')"> No</label></div>
+</div>
+<div class="criterion">
+  <div class="criterion-label">2. Tone matches brand (1–5)</div>
+  <div class="radio-group"><label><input type="radio" name="cl-c2" value="1" onchange="calcScore('cl')"> 1</label><label><input type="radio" name="cl-c2" value="2" onchange="calcScore('cl')"> 2</label><label><input type="radio" name="cl-c2" value="3" onchange="calcScore('cl')"> 3</label><label><input type="radio" name="cl-c2" value="4" onchange="calcScore('cl')"> 4</label><label><input type="radio" name="cl-c2" value="5" onchange="calcScore('cl')"> 5</label></div>
+</div>
+<div class="criterion">
+  <div class="criterion-label">3. Reply length appropriate (1–5)</div>
+  <div class="radio-group"><label><input type="radio" name="cl-c3" value="1" onchange="calcScore('cl')"> 1</label><label><input type="radio" name="cl-c3" value="2" onchange="calcScore('cl')"> 2</label><label><input type="radio" name="cl-c3" value="3" onchange="calcScore('cl')"> 3</label><label><input type="radio" name="cl-c3" value="4" onchange="calcScore('cl')"> 4</label><label><input type="radio" name="cl-c3" value="5" onchange="calcScore('cl')"> 5</label></div>
+</div>
+<div class="criterion">
+  <div class="criterion-label">4. Needs major edits (yes / no)</div>
+  <div class="radio-group"><label><input type="radio" name="cl-c4" value="Yes" onchange="calcScore('cl')"> Yes</label><label><input type="radio" name="cl-c4" value="No" onchange="calcScore('cl')"> No</label></div>
+</div>
+<div class="score-row">
+  <div>Claude.ai — criteria answered</div>
+  <div class="score-display" id="cl-total">0 / 4 <span>criteria answered</span></div>
+</div>
+</div>
   </div>
+
+  <!-- Comparison Table -->
   <div class="section">
     <h2>Comparison Table</h2>
-    <p style="font-size:13px;color:#6B7280;margin-bottom:14px;">Click cells to fill in your observations.</p>
+    <p style="font-size:13px;color:#6B7280;margin-bottom:4px;">Scores fill in automatically as you select above. Click any notes cell to type observations.</p>
     <table class="comp-table" id="comp-table">
-      <tr><th>Criterion</th><th>LM Studio</th><th>LM Notes</th><th>Claude.ai</th><th>Claude Notes</th></tr>
-      <tr><td>Persuasiveness</td><td contenteditable="true" id="t-lm-1"></td><td contenteditable="true"></td><td contenteditable="true" id="t-cl-1"></td><td contenteditable="true"></td></tr>
-      <tr><td>Stat "80%" used</td><td contenteditable="true" id="t-lm-2"></td><td contenteditable="true"></td><td contenteditable="true" id="t-cl-2"></td><td contenteditable="true"></td></tr>
-      <tr><td>CTA present</td><td contenteditable="true" id="t-lm-3"></td><td contenteditable="true"></td><td contenteditable="true" id="t-cl-3"></td><td contenteditable="true"></td></tr>
-      <tr><td>Executive tone</td><td contenteditable="true" id="t-lm-4"></td><td contenteditable="true"></td><td contenteditable="true" id="t-cl-4"></td><td contenteditable="true"></td></tr>
-      <tr><td><strong>TOTAL</strong></td><td id="t-lm-sum">—</td><td contenteditable="true"></td><td id="t-cl-sum">—</td><td contenteditable="true"></td></tr>
+      <tr>
+        <th>Criterion</th>
+        <th>LM Studio score</th>
+        <th>LM Studio notes</th>
+        <th>Claude.ai score</th>
+        <th>Claude.ai notes</th>
+      </tr>
+      <tr>
+  <td>Correct solution proposed</td>
+  <td contenteditable="true" id="t-lm-1"></td>
+  <td contenteditable="true"></td>
+  <td contenteditable="true" id="t-cl-1"></td>
+  <td contenteditable="true"></td>
+</tr>
+<tr>
+  <td>Tone matches brand</td>
+  <td contenteditable="true" id="t-lm-2"></td>
+  <td contenteditable="true"></td>
+  <td contenteditable="true" id="t-cl-2"></td>
+  <td contenteditable="true"></td>
+</tr>
+<tr>
+  <td>Reply length appropriate</td>
+  <td contenteditable="true" id="t-lm-3"></td>
+  <td contenteditable="true"></td>
+  <td contenteditable="true" id="t-cl-3"></td>
+  <td contenteditable="true"></td>
+</tr>
+<tr>
+  <td>Needs major edits</td>
+  <td contenteditable="true" id="t-lm-4"></td>
+  <td contenteditable="true"></td>
+  <td contenteditable="true" id="t-cl-4"></td>
+  <td contenteditable="true"></td>
+</tr>
+<tr>
+  <td><strong>Summary</strong></td>
+  <td id="t-lm-sum">—</td>
+  <td contenteditable="true"></td>
+  <td id="t-cl-sum">—</td>
+  <td contenteditable="true"></td>
+</tr>
     </table>
-    <button class="dl-btn" onclick="downloadCSV()">⬇ Download Results as CSV</button>
   </div>
+
+  <!-- Winner -->
   <div class="section">
-    <h2>Reference Code (API version)</h2>
-    <p style="font-size:13px;color:#6B7280;line-height:1.6;"><code>main.py</code> shows how to run this benchmark programmatically using the Anthropic SDK (requires an API key). Provided for reference only.</p>
+    <h2>Winner</h2>
+    <div class="todo-note">Based on your scores, which model wins for this use case?</div>
+    <select class="winner-select" id="winner-select">
+      <option value="">-- pick a winner --</option>
+      <option value="LM Studio">LM Studio</option>
+      <option value="Claude.ai">Claude.ai</option>
+      <option value="Tie">Tie</option>
+    </select>
+    <textarea id="winner-reasoning" rows="4" placeholder="[TODO: explain your reasoning — consider quality, speed, cost, and fit for the use case]"></textarea>
+    <br>
+    <button class="dl-btn" onclick="downloadCSV()">Download Results as CSV</button>
   </div>
+
 </div>
+
 <script>
-function switchTab(m){document.getElementById('scorecard-lm').style.display=m==='lm'?'grid':'none';document.getElementById('scorecard-cl').style.display=m==='cl'?'grid':'none';document.getElementById('tab-lm').className='model-tab'+(m==='lm'?' active':'');document.getElementById('tab-cl').className='model-tab'+(m==='cl'?' active':'');}
-function calcScore(m){let t=0;for(let i=1;i<=4;i++){const s=document.querySelector(`input[name="${m}-c${i}"]:checked`);if(s){t+=parseInt(s.value);const c=document.getElementById(`t-${m}-${i}`);if(c)c.textContent=s.value;}}document.getElementById(`${m}-total`).innerHTML=`${t} <span>/ 20</span>`;document.getElementById(`t-${m}-sum`).textContent=t+' / 20';}
-function downloadCSV(){const t=document.getElementById('comp-table');const r=Array.from(t.querySelectorAll('tr'));const c=r.map(r=>Array.from(r.querySelectorAll('th,td')).map(c=>`"${c.textContent.replace(/"/g,'""')}"`).join(',')).join('\n');const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(c);a.download='sample05-marketing-copy-results.csv';a.click();}
+
+function switchTab(model) {
+  document.getElementById('scorecard-lm').style.display = model === 'lm' ? 'grid' : 'none';
+  document.getElementById('scorecard-cl').style.display = model === 'cl' ? 'grid' : 'none';
+  document.getElementById('tab-lm').className = 'model-tab' + (model === 'lm' ? ' active' : '');
+  document.getElementById('tab-cl').className = 'model-tab' + (model === 'cl' ? ' active' : '');
+}
+
+function calcScore(model) {
+  let total = 0;
+  let answered = 0;
+  const rows = document.querySelectorAll(`[data-model="${model}"] .criterion`);
+  rows.forEach((row, i) => {
+    const sel = row.querySelector('input[type=radio]:checked');
+    const cell = document.querySelector(`#t-${model}-${i+1}`);
+    if (sel) {
+      answered++;
+      const v = parseFloat(sel.value) || 0;
+      total += v;
+      if (cell) cell.textContent = sel.value;
+    }
+  });
+  const totalEl = document.getElementById(`${model}-total`);
+  if (totalEl) totalEl.innerHTML = `${answered} / ${rows.length} <span>criteria answered</span>`;
+  const sumEl = document.getElementById(`t-${model}-sum`);
+  if (sumEl) sumEl.textContent = `${answered}/${rows.length}`;
+}
+
+function downloadCSV() {
+  const rows = [];
+  const prompt = document.getElementById('test-prompt')?.value || '';
+  rows.push(['Test Prompt', prompt]);
+  rows.push(['']);
+  rows.push(['Criterion', 'LM Studio', 'LM Studio Notes', 'Claude.ai', 'Claude.ai Notes']);
+  const compTable = document.getElementById('comp-table');
+  if (compTable) {
+    compTable.querySelectorAll('tr').forEach(tr => {
+      rows.push(Array.from(tr.querySelectorAll('th,td')).map(c => '"' + c.textContent.replace(/"/g, '""') + '"'));
+    });
+  }
+  rows.push(['']);
+  const winner = document.getElementById('winner-select')?.value || '';
+  const reasoning = document.getElementById('winner-reasoning')?.value || '';
+  rows.push(['Winner', winner]);
+  rows.push(['Reasoning', reasoning]);
+  const csv = rows.map(r => Array.isArray(r) ? r.join(',') : r).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'ho1-sample-results.csv';
+  a.click();
+}
+
 </script>
 </body>
 </html>

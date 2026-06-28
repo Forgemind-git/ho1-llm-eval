@@ -1,105 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>HO1 — LLM Evaluation Report | Forgemind AI Claude Course</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background:#F8F9FA; color:#1a1a2e; }
-:root { --color: #1D4ED8; }
-header { background: var(--color); color:#fff; padding:40px 32px 32px; }
-header .badge { font-size:13px; font-weight:700; letter-spacing:.08em; opacity:.8; text-transform:uppercase; margin-bottom:8px; }
-header h1 { font-size:28px; font-weight:800; margin-bottom:8px; }
-header p { font-size:15px; opacity:.85; max-width:640px; line-height:1.6; }
-.sub-bar { background:#fff; border-left:4px solid var(--color); padding:14px 20px; margin:24px 32px; border-radius:4px; font-size:14px; color:#374151; line-height:1.6; box-shadow:0 1px 4px rgba(0,0,0,.07); }
-.sub-bar strong { color:var(--color); }
-.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; padding:0 32px 40px; }
-.card { background:#fff; border-radius:10px; box-shadow:0 1px 6px rgba(0,0,0,.08); overflow:hidden; }
-.card:hover { box-shadow:0 4px 16px rgba(0,0,0,.13); }
-.card-top { background:var(--color); padding:14px 18px; display:flex; align-items:center; gap:10px; }
-.card-num { background:rgba(255,255,255,.25); color:#fff; font-weight:800; font-size:12px; border-radius:20px; padding:2px 9px; }
-.card-top h3 { color:#fff; font-size:14.5px; font-weight:700; }
-.card-body { padding:16px 18px; }
-.card-body p { font-size:13px; color:#4B5563; line-height:1.6; margin-bottom:14px; }
-.btn { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; background:var(--color); color:#fff; text-decoration:none; border-radius:6px; font-size:13px; font-weight:600; }
-.btn:hover { opacity:.88; }
-footer { text-align:center; padding:24px; color:#9CA3AF; font-size:13px; border-top:1px solid #E5E7EB; margin-top:8px; }
-@media(max-width:580px){ .grid{ grid-template-columns:1fr; padding:0 14px 28px; } header{ padding:24px 16px; } .sub-bar{ margin:14px 14px; } }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HO1: LLM Evaluation Report — Starter</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#F8F9FA; color:#1a1a2e; }
+    header { background:#1D4ED8; color:#fff; padding:40px 32px 32px; }
+    .badge { font-size:12px; font-weight:700; letter-spacing:.08em; opacity:.75; text-transform:uppercase; margin-bottom:8px; }
+    h1 { font-size:26px; font-weight:800; margin-bottom:6px; }
+    header p { font-size:14px; opacity:.85; max-width:600px; line-height:1.6; }
+    .starter-bar { background:#FEF3C7; border-left:4px solid #D97706; padding:14px 20px; margin:24px 32px; border-radius:4px; font-size:14px; color:#92400E; line-height:1.6; }
+    .starter-bar strong { color:#92400E; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; padding:0 32px 40px; }
+    .card { background:#fff; border-radius:10px; box-shadow:0 1px 6px rgba(0,0,0,.08); overflow:hidden; }
+    .card-top { background:#1D4ED8; padding:12px 16px; display:flex; align-items:center; gap:10px; }
+    .num { background:rgba(255,255,255,.25); color:#fff; font-weight:800; font-size:12px; border-radius:20px; padding:2px 9px; }
+    .card-top h3 { color:#fff; font-size:14px; font-weight:700; }
+    .card-body { padding:16px; }
+    .card-body p { font-size:13px; color:#4B5563; line-height:1.6; margin-bottom:14px; }
+    .todo-badge { display:inline-block; background:#FEF3C7; color:#92400E; font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px; margin-bottom:12px; }
+    .btn { display:inline-flex; align-items:center; gap:6px; padding:8px 14px; background:#1D4ED8; color:#fff; text-decoration:none; border-radius:6px; font-size:13px; font-weight:600; }
+    footer { text-align:center; padding:24px; color:#9CA3AF; font-size:13px; border-top:1px solid #E5E7EB; }
+  </style>
 </head>
 <body>
+  <header>
+    <div class="badge">HO1 · Forgemind AI Claude Course · Starter Template</div>
+    <h1>LLM Evaluation Report</h1>
+    <p>Your starting point. Pick ONE sample below, read the problem statement, and build it using Claude.ai.</p>
+  </header>
+  <div class="starter-bar">
+    <strong>This is the starter branch.</strong> It gives you the structure — you supply the thinking and the Claude.ai work.
+    To see a complete reference, switch to the <code>main</code> branch or visit the GitHub Pages site.
+  </div>
+  <div class="grid">
 
-<header>
-  <div class="badge">HO1</div>
-  <h1>LLM Evaluation Report</h1>
-  <p>A structured framework for comparing a local model (LM Studio) vs Claude.ai side-by-side.</p>
-</header>
-
-<div class="sub-bar">
-  <strong>Claude.ai subscription required</strong> — No API key. Run each test prompt in LM Studio AND in Claude.ai chat. Score both using the rubric. Fill in the included comparison table.
-</div>
-
-<div class="grid">
-
-  <div class="card">
-    <div class="card-top">
-      <span class="card-num">01</span>
-      <h3>Support Email Benchmark</h3>
+    <div class="card">
+      <div class="card-top"><span class="num">Sample 1</span><h3>support tickets</h3></div>
+      <div class="card-body">
+        <span class="todo-badge">⬜ Not started</span>
+        <p>Your support team handles ~150 tickets a week and you are weighing a local model to cut API spend. Grab 20 real anonymised tickets, have a local model (LM Studio) and Claude each triage and draft replies, then score both across tone, accuracy and speed.</p>
+        <a href="./samples/sample-01/" class="btn">Start here →</a>
+      </div>
     </div>
-    <div class="card-body">
-      <p>Draft a professional, empathetic reply to a customer whose Premium Plan upgrade isn't showing after 5 days.</p>
-      <a href="./samples/sample-01/" class="btn">View Sample →</a>
+    <div class="card">
+      <div class="card-top"><span class="num">Sample 2</span><h3>invoice extraction</h3></div>
+      <div class="card-body">
+        <span class="todo-badge">⬜ Not started</span>
+        <p>You run accounts payable and key invoices by hand. Grab 15 scanned supplier invoices, have a local model and Claude each extract vendor, date, amount and line-items, then score accuracy and formatting.</p>
+        <a href="./samples/sample-02/" class="btn">Start here →</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-top"><span class="num">Sample 3</span><h3>meeting notes</h3></div>
+      <div class="card-body">
+        <span class="todo-badge">⬜ Not started</span>
+        <p>As a project lead you want meeting notes that write themselves. Feed 10 long meeting transcripts to both models and score the summaries on completeness, action-item capture and brevity.</p>
+        <a href="./samples/sample-03/" class="btn">Start here →</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-top"><span class="num">Sample 4</span><h3>document redaction</h3></div>
+      <div class="card-body">
+        <span class="todo-badge">⬜ Not started</span>
+        <p>Your clinic must keep patient data on-premises. Run 20 sensitive documents through a local model and Claude for PII redaction, then score recall and precision of what was redacted.</p>
+        <a href="./samples/sample-04/" class="btn">Start here →</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-top"><span class="num">Sample 5</span><h3>email drafting</h3></div>
+      <div class="card-body">
+        <span class="todo-badge">⬜ Not started</span>
+        <p>You handle repetitive customer emails and want AI to draft the first reply. Take 15 common queries, have both models draft replies, then score tone, accuracy and edit-distance from your ideal.</p>
+        <a href="./samples/sample-05/" class="btn">Start here →</a>
+      </div>
     </div>
   </div>
-
-  <div class="card">
-    <div class="card-top">
-      <span class="card-num">02</span>
-      <h3>Code Review Benchmark</h3>
-    </div>
-    <div class="card-body">
-      <p>Identify and fix a critical ZeroDivisionError bug in a Python average calculation function.</p>
-      <a href="./samples/sample-02/" class="btn">View Sample →</a>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-top">
-      <span class="card-num">03</span>
-      <h3>Data Extraction Benchmark</h3>
-    </div>
-    <div class="card-body">
-      <p>Extract structured JSON with customer_name, order_id, issue, and urgency_level from a raw customer message.</p>
-      <a href="./samples/sample-03/" class="btn">View Sample →</a>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-top">
-      <span class="card-num">04</span>
-      <h3>Meeting Summary Benchmark</h3>
-    </div>
-    <div class="card-body">
-      <p>Summarise a sprint planning meeting and list all action items with correct owners and dates.</p>
-      <a href="./samples/sample-04/" class="btn">View Sample →</a>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-top">
-      <span class="card-num">05</span>
-      <h3>Marketing Copy Benchmark</h3>
-    </div>
-    <div class="card-body">
-      <p>Write a 3-sentence executive-targeted marketing hook for an AI scheduling tool with a clear CTA.</p>
-      <a href="./samples/sample-05/" class="btn">View Sample →</a>
-    </div>
-  </div>
-
-</div>
-
-<footer>Forgemind AI &middot; Claude Course &middot; HO1 &middot; github.com/Forgemind-git/ho1-llm-eval</footer>
-
+  <footer>Forgemind AI · Claude Course · HO1 · <a href="https://github.com/Forgemind-git/ho1-llm-eval" style="color:#1D4ED8">github.com/Forgemind-git/ho1-llm-eval</a></footer>
 </body>
 </html>

@@ -1,3 +1,5 @@
-anthropic
-requests
-tabulate
+# Add the Python packages you need here.
+# Example:
+# anthropic
+# requests
+# tabulate

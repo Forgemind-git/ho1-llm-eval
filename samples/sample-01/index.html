@@ -1,226 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Sample 01 — Support Email Benchmark | HO1</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#F8F9FA; color:#1a1a2e; }
-:root { --color:#1D4ED8; }
-header { background:var(--color); color:#fff; padding:36px 32px 28px; }
-header .back { font-size:13px; opacity:.75; text-decoration:none; color:#fff; display:inline-flex; align-items:center; gap:6px; margin-bottom:14px; }
-header .back:hover { opacity:1; }
-header .badge { font-size:12px; font-weight:700; letter-spacing:.08em; opacity:.75; text-transform:uppercase; margin-bottom:6px; }
-header h1 { font-size:24px; font-weight:800; margin-bottom:6px; }
-header p { font-size:14px; opacity:.85; max-width:640px; line-height:1.6; }
-.container { max-width:860px; margin:0 auto; padding:32px 24px 60px; }
-.section { background:#fff; border-radius:10px; box-shadow:0 1px 6px rgba(0,0,0,.08); padding:24px 28px; margin-bottom:24px; }
-.section h2 { font-size:16px; font-weight:700; color:var(--color); margin-bottom:16px; border-bottom:2px solid #EEF2FF; padding-bottom:10px; }
-.prompt-box { background:#F0F4FF; border-left:4px solid var(--color); padding:14px 18px; border-radius:4px; font-size:14px; line-height:1.7; color:#1e293b; white-space:pre-wrap; font-family:inherit; }
-table { width:100%; border-collapse:collapse; font-size:14px; }
-table th { background:#EEF2FF; color:var(--color); font-weight:700; padding:10px 14px; text-align:left; }
-table td { padding:10px 14px; border-bottom:1px solid #E5E7EB; color:#374151; }
-table tr:last-child td { border-bottom:none; }
-ol { padding-left:22px; }
-ol li { font-size:14px; color:#374151; margin-bottom:10px; line-height:1.6; }
-ol li strong { color:#111827; }
-.step-label { display:inline-block; background:var(--color); color:#fff; font-size:11px; font-weight:700; border-radius:12px; padding:2px 9px; margin-right:6px; }
-.sub-note { background:#FFF7ED; border-left:4px solid #F59E0B; padding:12px 16px; border-radius:4px; font-size:13px; color:#92400E; margin-bottom:16px; line-height:1.6; }
-.scorecard { display:grid; gap:16px; }
-.criterion { border:1px solid #E5E7EB; border-radius:8px; padding:14px 18px; }
-.criterion-label { font-size:13px; font-weight:600; color:#111827; margin-bottom:10px; }
-.radio-group { display:flex; gap:8px; flex-wrap:wrap; }
-.radio-group label { display:flex; align-items:center; gap:5px; font-size:13px; color:#374151; cursor:pointer; background:#F3F4F6; padding:5px 12px; border-radius:20px; border:1px solid #E5E7EB; }
-.radio-group input[type=radio] { accent-color:var(--color); }
-.radio-group label:has(input:checked) { background:#EEF2FF; border-color:var(--color); color:var(--color); font-weight:600; }
-.score-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-top:20px; padding-top:16px; border-top:2px solid #E5E7EB; }
-.score-display { font-size:22px; font-weight:800; color:var(--color); }
-.score-display span { font-size:13px; font-weight:400; color:#6B7280; }
-.model-tabs { display:flex; gap:10px; margin-bottom:16px; }
-.model-tab { flex:1; text-align:center; padding:8px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; border:2px solid #E5E7EB; background:#fff; color:#6B7280; }
-.model-tab.active { background:var(--color); color:#fff; border-color:var(--color); }
-.comp-table { width:100%; border-collapse:collapse; font-size:14px; }
-.comp-table th { background:#1e293b; color:#fff; padding:10px 14px; text-align:left; font-size:13px; }
-.comp-table td { padding:10px 14px; border-bottom:1px solid #E5E7EB; }
-.comp-table td[contenteditable=true] { background:#FAFAFA; }
-.comp-table td[contenteditable=true]:focus { background:#EEF2FF; outline:2px solid var(--color); border-radius:2px; }
-.comp-table tr:last-child td { border-bottom:none; font-weight:700; }
-.dl-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:var(--color); color:#fff; border:none; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer; margin-top:16px; }
-.dl-btn:hover { opacity:.88; }
-code { background:#F3F4F6; padding:2px 7px; border-radius:4px; font-size:12.5px; font-family:'SF Mono','Fira Code',monospace; color:#374151; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sample 01 — Support Tickets | HO1 Starter</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#F8F9FA; color:#1a1a2e; }
+    :root { --color:#1D4ED8; }
+    header { background:var(--color); color:#fff; padding:36px 32px 28px; }
+    header .back { font-size:13px; opacity:.75; text-decoration:none; color:#fff; display:inline-flex; align-items:center; gap:6px; margin-bottom:14px; }
+    header .back:hover { opacity:1; }
+    header .badge { font-size:12px; font-weight:700; letter-spacing:.08em; opacity:.75; text-transform:uppercase; margin-bottom:6px; }
+    header h1 { font-size:24px; font-weight:800; margin-bottom:6px; }
+    header p { font-size:14px; opacity:.85; max-width:640px; line-height:1.6; }
+    .container { max-width:860px; margin:0 auto; padding:32px 24px 60px; }
+    .section { background:#fff; border-radius:10px; box-shadow:0 1px 6px rgba(0,0,0,.08); padding:24px 28px; margin-bottom:24px; }
+    .section h2 { font-size:16px; font-weight:700; color:var(--color); margin-bottom:16px; border-bottom:2px solid #EEF2FF; padding-bottom:10px; }
+    .todo-note { background:#FEF3C7; border-left:4px solid #D97706; padding:12px 16px; border-radius:4px; font-size:13px; color:#92400E; margin-bottom:16px; line-height:1.6; }
+    textarea { width:100%; border:1px solid #D1D5DB; border-radius:6px; padding:12px 14px; font-size:13px; font-family:inherit; color:#374151; line-height:1.6; resize:vertical; }
+    textarea:focus { outline:2px solid var(--color); border-color:var(--color); }
+    .model-tabs { display:flex; gap:10px; margin-bottom:16px; }
+    .model-tab { flex:1; text-align:center; padding:8px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; border:2px solid #E5E7EB; background:#fff; color:#6B7280; }
+    .model-tab.active { background:var(--color); color:#fff; border-color:var(--color); }
+    .scorecard { display:grid; gap:16px; }
+    .criterion { border:1px solid #E5E7EB; border-radius:8px; padding:14px 18px; }
+    .criterion-label { font-size:13px; font-weight:600; color:#111827; margin-bottom:10px; }
+    .radio-group { display:flex; gap:8px; flex-wrap:wrap; }
+    .radio-group label { display:flex; align-items:center; gap:5px; font-size:13px; color:#374151; cursor:pointer; background:#F3F4F6; padding:5px 12px; border-radius:20px; border:1px solid #E5E7EB; }
+    .radio-group input[type=radio] { accent-color:var(--color); }
+    .radio-group label:has(input:checked) { background:#EEF2FF; border-color:var(--color); color:var(--color); font-weight:600; }
+    .score-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-top:20px; padding-top:16px; border-top:2px solid #E5E7EB; }
+    .score-display { font-size:22px; font-weight:800; color:var(--color); }
+    .score-display span { font-size:13px; font-weight:400; color:#6B7280; }
+    .winner-select { width:100%; padding:10px 14px; border:1px solid #D1D5DB; border-radius:6px; font-size:14px; color:#374151; margin-bottom:14px; }
+    .winner-select:focus { outline:2px solid var(--color); }
+    .dl-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:var(--color); color:#fff; border:none; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer; margin-top:16px; }
+    .dl-btn:hover { opacity:.88; }
+    table.comp-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:12px; }
+    .comp-table th { background:#1e293b; color:#fff; padding:10px 14px; text-align:left; }
+    .comp-table td { padding:10px 14px; border-bottom:1px solid #E5E7EB; color:#374151; }
+    .comp-table td[contenteditable=true] { background:#FAFAFA; min-width:80px; }
+    .comp-table td[contenteditable=true]:focus { background:#EEF2FF; outline:2px solid var(--color); }
+    .comp-table tr:last-child td { border-bottom:none; font-weight:700; }
 </style>
 </head>
 <body>
 <header>
   <a href="../../index.html" class="back">← Back to HO1</a>
-  <div class="badge">HO1 · Sample 01</div>
-  <h1>Support Email Benchmark</h1>
-  <p>Evaluate how well each model drafts a professional, empathetic customer support reply.</p>
+  <div class="badge">HO1 · Sample 01 · Starter</div>
+  <h1>Support Tickets</h1>
+  <p>Your support team handles ~150 tickets a week and you are weighing a local model to cut API spend. Grab 20 real anonymised tickets, have a local model (LM Studio) and Claude each triage and draft replies, then score both across tone, accuracy and speed.</p>
 </header>
 
 <div class="container">
 
-  <!-- Problem Statement -->
+  <!-- Test Prompt -->
   <div class="section">
-    <h2>Problem Statement</h2>
-    <div class="prompt-box">You are a customer support agent. A customer wrote:
-
-"I ordered the Premium Plan 5 days ago but my dashboard still shows Free."
-
-Draft a professional, empathetic reply.</div>
+    <h2>Test Prompt</h2>
+    <div class="todo-note">Write the prompt you will paste into BOTH LM Studio and Claude.ai. Use the same prompt for both so the comparison is fair.</div>
+    <textarea id="test-prompt" rows="6" placeholder="[TODO: write your test prompt here — what will you give to both models?]"></textarea>
   </div>
 
-  <!-- What You're Measuring -->
+  <!-- LM Studio Output -->
   <div class="section">
-    <h2>What You're Measuring</h2>
-    <table>
-      <tr><th>Criterion</th><th>What to look for</th><th>Scale</th></tr>
-      <tr><td><strong>Tone &amp; empathy</strong></td><td>Does the model acknowledge the frustration and show genuine care?</td><td>1–5</td></tr>
-      <tr><td><strong>Accuracy — addresses the real issue</strong></td><td>Does the reply focus on the billing/upgrade problem, not generic fluff?</td><td>1–5</td></tr>
-      <tr><td><strong>Length &amp; scannability</strong></td><td>Is the reply concise with clear paragraphs, not a wall of text?</td><td>1–5</td></tr>
-      <tr><td><strong>Call-to-action clarity</strong></td><td>Is there a clear next step for the customer to take or await?</td><td>1–5</td></tr>
-    </table>
+    <h2>LM Studio — Raw Output</h2>
+    <div class="todo-note">Run your prompt in LM Studio. Paste the full response below before scoring.</div>
+    <textarea rows="8" placeholder="[TODO: paste LM Studio response here]"></textarea>
   </div>
 
-  <!-- Run the Test -->
+  <!-- Claude.ai Output -->
   <div class="section">
-    <h2>Run the Test</h2>
-    <div class="sub-note">No API key needed. Run this test manually in two tools and compare results.</div>
-
-    <ol>
-      <li>
-        <span class="step-label">LM Studio</span>
-        <strong>Open LM Studio</strong> on your laptop. Load a model (e.g. <code>Mistral-7B</code> or <code>Llama-3.1-8B</code>). Go to the <em>Chat</em> tab.
-      </li>
-      <li>
-        <span class="step-label">LM Studio</span>
-        Paste the prompt above (starting with "You are a customer support agent…") into the chat and press Send. Copy the full response into the Comparison Table below.
-      </li>
-      <li>
-        <span class="step-label">Claude.ai</span>
-        Open <strong><a href="https://claude.ai" target="_blank">claude.ai</a></strong> in a new tab. Start a new conversation.
-      </li>
-      <li>
-        <span class="step-label">Claude.ai</span>
-        Paste the same prompt and press Send. Copy the full response into the Comparison Table below.
-      </li>
-      <li>
-        <span class="step-label">Score</span>
-        Use the scorecard below to rate each model on the four criteria.
-      </li>
-    </ol>
+    <h2>Claude.ai — Raw Output</h2>
+    <div class="todo-note">Run the same prompt in Claude.ai. Paste the full response below before scoring.</div>
+    <textarea rows="8" placeholder="[TODO: paste Claude.ai response here]"></textarea>
   </div>
 
-  <!-- Interactive Scorecard -->
+  <!-- Scorecard -->
   <div class="section">
     <h2>Score Your Results</h2>
     <div class="model-tabs">
       <div class="model-tab active" id="tab-lm" onclick="switchTab('lm')">LM Studio</div>
       <div class="model-tab" id="tab-cl" onclick="switchTab('cl')">Claude.ai</div>
     </div>
-
-    <!-- LM Studio scorecard -->
-    <div id="scorecard-lm" class="scorecard">
-      <div class="criterion">
-        <div class="criterion-label">1. Tone &amp; empathy (1–5)</div>
-        <div class="radio-group" id="lm-c1">
-          <label><input type="radio" name="lm-c1" value="1" onchange="calcScore('lm')"> 1</label>
-          <label><input type="radio" name="lm-c1" value="2" onchange="calcScore('lm')"> 2</label>
-          <label><input type="radio" name="lm-c1" value="3" onchange="calcScore('lm')"> 3</label>
-          <label><input type="radio" name="lm-c1" value="4" onchange="calcScore('lm')"> 4</label>
-          <label><input type="radio" name="lm-c1" value="5" onchange="calcScore('lm')"> 5</label>
-        </div>
-      </div>
-      <div class="criterion">
-        <div class="criterion-label">2. Accuracy — addresses the real issue (1–5)</div>
-        <div class="radio-group">
-          <label><input type="radio" name="lm-c2" value="1" onchange="calcScore('lm')"> 1</label>
-          <label><input type="radio" name="lm-c2" value="2" onchange="calcScore('lm')"> 2</label>
-          <label><input type="radio" name="lm-c2" value="3" onchange="calcScore('lm')"> 3</label>
-          <label><input type="radio" name="lm-c2" value="4" onchange="calcScore('lm')"> 4</label>
-          <label><input type="radio" name="lm-c2" value="5" onchange="calcScore('lm')"> 5</label>
-        </div>
-      </div>
-      <div class="criterion">
-        <div class="criterion-label">3. Length &amp; scannability (1–5)</div>
-        <div class="radio-group">
-          <label><input type="radio" name="lm-c3" value="1" onchange="calcScore('lm')"> 1</label>
-          <label><input type="radio" name="lm-c3" value="2" onchange="calcScore('lm')"> 2</label>
-          <label><input type="radio" name="lm-c3" value="3" onchange="calcScore('lm')"> 3</label>
-          <label><input type="radio" name="lm-c3" value="4" onchange="calcScore('lm')"> 4</label>
-          <label><input type="radio" name="lm-c3" value="5" onchange="calcScore('lm')"> 5</label>
-        </div>
-      </div>
-      <div class="criterion">
-        <div class="criterion-label">4. Call-to-action clarity (1–5)</div>
-        <div class="radio-group">
-          <label><input type="radio" name="lm-c4" value="1" onchange="calcScore('lm')"> 1</label>
-          <label><input type="radio" name="lm-c4" value="2" onchange="calcScore('lm')"> 2</label>
-          <label><input type="radio" name="lm-c4" value="3" onchange="calcScore('lm')"> 3</label>
-          <label><input type="radio" name="lm-c4" value="4" onchange="calcScore('lm')"> 4</label>
-          <label><input type="radio" name="lm-c4" value="5" onchange="calcScore('lm')"> 5</label>
-        </div>
-      </div>
-      <div class="score-row">
-        <div>LM Studio total score</div>
-        <div class="score-display" id="lm-total">0 <span>/ 20</span></div>
-      </div>
-    </div>
-
-    <!-- Claude.ai scorecard (hidden by default) -->
-    <div id="scorecard-cl" class="scorecard" style="display:none">
-      <div class="criterion">
-        <div class="criterion-label">1. Tone &amp; empathy (1–5)</div>
-        <div class="radio-group">
-          <label><input type="radio" name="cl-c1" value="1" onchange="calcScore('cl')"> 1</label>
-          <label><input type="radio" name="cl-c1" value="2" onchange="calcScore('cl')"> 2</label>
-          <label><input type="radio" name="cl-c1" value="3" onchange="calcScore('cl')"> 3</label>
-          <label><input type="radio" name="cl-c1" value="4" onchange="calcScore('cl')"> 4</label>
-          <label><input type="radio" name="cl-c1" value="5" onchange="calcScore('cl')"> 5</label>
-        </div>
-      </div>
-      <div class="criterion">
-        <div class="criterion-label">2. Accuracy — addresses the real issue (1–5)</div>
-        <div class="radio-group">
-          <label><input type="radio" name="cl-c2" value="1" onchange="calcScore('cl')"> 1</label>
-          <label><input type="radio" name="cl-c2" value="2" onchange="calcScore('cl')"> 2</label>
-          <label><input type="radio" name="cl-c2" value="3" onchange="calcScore('cl')"> 3</label>
-          <label><input type="radio" name="cl-c2" value="4" onchange="calcScore('cl')"> 4</label>
-          <label><input type="radio" name="cl-c2" value="5" onchange="calcScore('cl')"> 5</label>
-        </div>
-      </div>
-      <div class="criterion">
-        <div class="criterion-label">3. Length &amp; scannability (1–5)</div>
-        <div class="radio-group">
-          <label><input type="radio" name="cl-c3" value="1" onchange="calcScore('cl')"> 1</label>
-          <label><input type="radio" name="cl-c3" value="2" onchange="calcScore('cl')"> 2</label>
-          <label><input type="radio" name="cl-c3" value="3" onchange="calcScore('cl')"> 3</label>
-          <label><input type="radio" name="cl-c3" value="4" onchange="calcScore('cl')"> 4</label>
-          <label><input type="radio" name="cl-c3" value="5" onchange="calcScore('cl')"> 5</label>
-        </div>
-      </div>
-      <div class="criterion">
-        <div class="criterion-label">4. Call-to-action clarity (1–5)</div>
-        <div class="radio-group">
-          <label><input type="radio" name="cl-c4" value="1" onchange="calcScore('cl')"> 1</label>
-          <label><input type="radio" name="cl-c4" value="2" onchange="calcScore('cl')"> 2</label>
-          <label><input type="radio" name="cl-c4" value="3" onchange="calcScore('cl')"> 3</label>
-          <label><input type="radio" name="cl-c4" value="4" onchange="calcScore('cl')"> 4</label>
-          <label><input type="radio" name="cl-c4" value="5" onchange="calcScore('cl')"> 5</label>
-        </div>
-      </div>
-      <div class="score-row">
-        <div>Claude.ai total score</div>
-        <div class="score-display" id="cl-total">0 <span>/ 20</span></div>
-      </div>
-    </div>
+    <div id="scorecard-lm" class="scorecard" data-model="lm" >
+<div class="criterion">
+  <div class="criterion-label">1. Tone & empathy (1–5)</div>
+  <div class="radio-group"><label><input type="radio" name="lm-c1" value="1" onchange="calcScore('lm')"> 1</label><label><input type="radio" name="lm-c1" value="2" onchange="calcScore('lm')"> 2</label><label><input type="radio" name="lm-c1" value="3" onchange="calcScore('lm')"> 3</label><label><input type="radio" name="lm-c1" value="4" onchange="calcScore('lm')"> 4</label><label><input type="radio" name="lm-c1" value="5" onchange="calcScore('lm')"> 5</label></div>
+</div>
+<div class="criterion">
+  <div class="criterion-label">2. Issue correctly identified (1–5)</div>
+  <div class="radio-group"><label><input type="radio" name="lm-c2" value="1" onchange="calcScore('lm')"> 1</label><label><input type="radio" name="lm-c2" value="2" onchange="calcScore('lm')"> 2</label><label><input type="radio" name="lm-c2" value="3" onchange="calcScore('lm')"> 3</label><label><input type="radio" name="lm-c2" value="4" onchange="calcScore('lm')"> 4</label><label><input type="radio" name="lm-c2" value="5" onchange="calcScore('lm')"> 5</label></div>
+</div>
+<div class="criterion">
+  <div class="criterion-label">3. Draft reply quality (1–5)</div>
+  <div class="radio-group"><label><input type="radio" name="lm-c3" value="1" onchange="calcScore('lm')"> 1</label><label><input type="radio" name="lm-c3" value="2" onchange="calcScore('lm')"> 2</label><label><input type="radio" name="lm-c3" value="3" onchange="calcScore('lm')"> 3</label><label><input type="radio" name="lm-c3" value="4" onchange="calcScore('lm')"> 4</label><label><input type="radio" name="lm-c3" value="5" onchange="calcScore('lm')"> 5</label></div>
+</div>
+<div class="criterion">
+  <div class="criterion-label">4. Latency feel (Fast / Slow)</div>
+  <div class="radio-group"><label><input type="radio" name="lm-c4" value="Fast" onchange="calcScore('lm')"> Fast</label><label><input type="radio" name="lm-c4" value="Slow" onchange="calcScore('lm')"> Slow</label></div>
+</div>
+<div class="score-row">
+  <div>LM Studio — criteria answered</div>
+  <div class="score-display" id="lm-total">0 / 4 <span>criteria answered</span></div>
+</div>
+</div>
+    <div id="scorecard-cl" class="scorecard" data-model="cl" style="display:none">
+<div class="criterion">
+  <div class="criterion-label">1. Tone & empathy (1–5)</div>
+  <div class="radio-group"><label><input type="radio" name="cl-c1" value="1" onchange="calcScore('cl')"> 1</label><label><input type="radio" name="cl-c1" value="2" onchange="calcScore('cl')"> 2</label><label><input type="radio" name="cl-c1" value="3" onchange="calcScore('cl')"> 3</label><label><input type="radio" name="cl-c1" value="4" onchange="calcScore('cl')"> 4</label><label><input type="radio" name="cl-c1" value="5" onchange="calcScore('cl')"> 5</label></div>
+</div>
+<div class="criterion">
+  <div class="criterion-label">2. Issue correctly identified (1–5)</div>
+  <div class="radio-group"><label><input type="radio" name="cl-c2" value="1" onchange="calcScore('cl')"> 1</label><label><input type="radio" name="cl-c2" value="2" onchange="calcScore('cl')"> 2</label><label><input type="radio" name="cl-c2" value="3" onchange="calcScore('cl')"> 3</label><label><input type="radio" name="cl-c2" value="4" onchange="calcScore('cl')"> 4</label><label><input type="radio" name="cl-c2" value="5" onchange="calcScore('cl')"> 5</label></div>
+</div>
+<div class="criterion">
+  <div class="criterion-label">3. Draft reply quality (1–5)</div>
+  <div class="radio-group"><label><input type="radio" name="cl-c3" value="1" onchange="calcScore('cl')"> 1</label><label><input type="radio" name="cl-c3" value="2" onchange="calcScore('cl')"> 2</label><label><input type="radio" name="cl-c3" value="3" onchange="calcScore('cl')"> 3</label><label><input type="radio" name="cl-c3" value="4" onchange="calcScore('cl')"> 4</label><label><input type="radio" name="cl-c3" value="5" onchange="calcScore('cl')"> 5</label></div>
+</div>
+<div class="criterion">
+  <div class="criterion-label">4. Latency feel (Fast / Slow)</div>
+  <div class="radio-group"><label><input type="radio" name="cl-c4" value="Fast" onchange="calcScore('cl')"> Fast</label><label><input type="radio" name="cl-c4" value="Slow" onchange="calcScore('cl')"> Slow</label></div>
+</div>
+<div class="score-row">
+  <div>Claude.ai — criteria answered</div>
+  <div class="score-display" id="cl-total">0 / 4 <span>criteria answered</span></div>
+</div>
+</div>
   </div>
 
   <!-- Comparison Table -->
   <div class="section">
     <h2>Comparison Table</h2>
-    <p style="font-size:13px;color:#6B7280;margin-bottom:14px;">Click any cell to type your observations. Use the Download button to save as CSV.</p>
+    <p style="font-size:13px;color:#6B7280;margin-bottom:4px;">Scores fill in automatically as you select above. Click any notes cell to type observations.</p>
     <table class="comp-table" id="comp-table">
       <tr>
         <th>Criterion</th>
@@ -230,53 +142,62 @@ Draft a professional, empathetic reply.</div>
         <th>Claude.ai notes</th>
       </tr>
       <tr>
-        <td>Tone &amp; empathy</td>
-        <td contenteditable="true" id="t-lm-1"></td>
-        <td contenteditable="true"></td>
-        <td contenteditable="true" id="t-cl-1"></td>
-        <td contenteditable="true"></td>
-      </tr>
-      <tr>
-        <td>Accuracy</td>
-        <td contenteditable="true" id="t-lm-2"></td>
-        <td contenteditable="true"></td>
-        <td contenteditable="true" id="t-cl-2"></td>
-        <td contenteditable="true"></td>
-      </tr>
-      <tr>
-        <td>Length &amp; scannability</td>
-        <td contenteditable="true" id="t-lm-3"></td>
-        <td contenteditable="true"></td>
-        <td contenteditable="true" id="t-cl-3"></td>
-        <td contenteditable="true"></td>
-      </tr>
-      <tr>
-        <td>CTA clarity</td>
-        <td contenteditable="true" id="t-lm-4"></td>
-        <td contenteditable="true"></td>
-        <td contenteditable="true" id="t-cl-4"></td>
-        <td contenteditable="true"></td>
-      </tr>
-      <tr>
-        <td><strong>TOTAL</strong></td>
-        <td id="t-lm-sum">—</td>
-        <td contenteditable="true" style="font-style:italic;color:#6B7280;" placeholder="Overall notes"></td>
-        <td id="t-cl-sum">—</td>
-        <td contenteditable="true" style="font-style:italic;color:#6B7280;"></td>
-      </tr>
+  <td>Tone & empathy</td>
+  <td contenteditable="true" id="t-lm-1"></td>
+  <td contenteditable="true"></td>
+  <td contenteditable="true" id="t-cl-1"></td>
+  <td contenteditable="true"></td>
+</tr>
+<tr>
+  <td>Issue correctly identified</td>
+  <td contenteditable="true" id="t-lm-2"></td>
+  <td contenteditable="true"></td>
+  <td contenteditable="true" id="t-cl-2"></td>
+  <td contenteditable="true"></td>
+</tr>
+<tr>
+  <td>Draft reply quality</td>
+  <td contenteditable="true" id="t-lm-3"></td>
+  <td contenteditable="true"></td>
+  <td contenteditable="true" id="t-cl-3"></td>
+  <td contenteditable="true"></td>
+</tr>
+<tr>
+  <td>Latency feel</td>
+  <td contenteditable="true" id="t-lm-4"></td>
+  <td contenteditable="true"></td>
+  <td contenteditable="true" id="t-cl-4"></td>
+  <td contenteditable="true"></td>
+</tr>
+<tr>
+  <td><strong>Summary</strong></td>
+  <td id="t-lm-sum">—</td>
+  <td contenteditable="true"></td>
+  <td id="t-cl-sum">—</td>
+  <td contenteditable="true"></td>
+</tr>
     </table>
-    <button class="dl-btn" onclick="downloadCSV()">⬇ Download Results as CSV</button>
   </div>
 
-  <!-- Reference Code -->
+  <!-- Winner -->
   <div class="section">
-    <h2>Reference Code (API version)</h2>
-    <p style="font-size:13px;color:#6B7280;line-height:1.6;">The file <code>main.py</code> in this folder shows how to run this same benchmark programmatically using the Anthropic SDK (requires an API key). It is provided for reference — you do not need it to complete this exercise.</p>
+    <h2>Winner</h2>
+    <div class="todo-note">Based on your scores, which model wins for this use case?</div>
+    <select class="winner-select" id="winner-select">
+      <option value="">-- pick a winner --</option>
+      <option value="LM Studio">LM Studio</option>
+      <option value="Claude.ai">Claude.ai</option>
+      <option value="Tie">Tie</option>
+    </select>
+    <textarea id="winner-reasoning" rows="4" placeholder="[TODO: explain your reasoning — consider quality, speed, cost, and fit for the use case]"></textarea>
+    <br>
+    <button class="dl-btn" onclick="downloadCSV()">Download Results as CSV</button>
   </div>
 
 </div>
 
 <script>
+
 function switchTab(model) {
   document.getElementById('scorecard-lm').style.display = model === 'lm' ? 'grid' : 'none';
   document.getElementById('scorecard-cl').style.display = model === 'cl' ? 'grid' : 'none';
@@ -286,29 +207,48 @@ function switchTab(model) {
 
 function calcScore(model) {
   let total = 0;
-  for (let i = 1; i <= 4; i++) {
-    const sel = document.querySelector(`input[name="${model}-c${i}"]:checked`);
+  let answered = 0;
+  const rows = document.querySelectorAll(`[data-model="${model}"] .criterion`);
+  rows.forEach((row, i) => {
+    const sel = row.querySelector('input[type=radio]:checked');
+    const cell = document.querySelector(`#t-${model}-${i+1}`);
     if (sel) {
-      total += parseInt(sel.value);
-      const tableCell = document.getElementById(`t-${model}-${i}`);
-      if (tableCell) tableCell.textContent = sel.value;
+      answered++;
+      const v = parseFloat(sel.value) || 0;
+      total += v;
+      if (cell) cell.textContent = sel.value;
     }
-  }
-  document.getElementById(`${model}-total`).innerHTML = `${total} <span>/ 20</span>`;
-  document.getElementById(`t-${model}-sum`).textContent = total + ' / 20';
+  });
+  const totalEl = document.getElementById(`${model}-total`);
+  if (totalEl) totalEl.innerHTML = `${answered} / ${rows.length} <span>criteria answered</span>`;
+  const sumEl = document.getElementById(`t-${model}-sum`);
+  if (sumEl) sumEl.textContent = `${answered}/${rows.length}`;
 }
 
 function downloadCSV() {
-  const table = document.getElementById('comp-table');
-  const rows = Array.from(table.querySelectorAll('tr'));
-  const csv = rows.map(r =>
-    Array.from(r.querySelectorAll('th,td')).map(c => `"${c.textContent.replace(/"/g,'""')}"`).join(',')
-  ).join('\n');
+  const rows = [];
+  const prompt = document.getElementById('test-prompt')?.value || '';
+  rows.push(['Test Prompt', prompt]);
+  rows.push(['']);
+  rows.push(['Criterion', 'LM Studio', 'LM Studio Notes', 'Claude.ai', 'Claude.ai Notes']);
+  const compTable = document.getElementById('comp-table');
+  if (compTable) {
+    compTable.querySelectorAll('tr').forEach(tr => {
+      rows.push(Array.from(tr.querySelectorAll('th,td')).map(c => '"' + c.textContent.replace(/"/g, '""') + '"'));
+    });
+  }
+  rows.push(['']);
+  const winner = document.getElementById('winner-select')?.value || '';
+  const reasoning = document.getElementById('winner-reasoning')?.value || '';
+  rows.push(['Winner', winner]);
+  rows.push(['Reasoning', reasoning]);
+  const csv = rows.map(r => Array.isArray(r) ? r.join(',') : r).join('\n');
   const a = document.createElement('a');
   a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = 'sample01-support-email-results.csv';
+  a.download = 'ho1-sample-results.csv';
   a.click();
 }
+
 </script>
 </body>
 </html>
