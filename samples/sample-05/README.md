@@ -1,98 +1,73 @@
-# Sample 05 — Marketing Copy Generator
+# HO1 Sample 5 — Email Drafting
 
-## Problem Statement
+## What you'll build
+A side-by-side test of first-draft email quality. You give the **same** customer email to a free local model (in LM Studio) and to **Claude.ai**, then score which one drafted the reply you'd be happiest to send with the fewest edits.
 
-Marketing wants to know if local AI can write ad copy. Compare Ollama and Claude on persuasiveness, clarity and call-to-action quality.
+## Use it with your Claude.ai subscription
+No API key needed. Just your normal Claude.ai login.
 
-## What It Measures
+1. Open **LM Studio** and load any small model (e.g. Llama 3.2). Paste the example prompt below into its chat. Copy the reply.
+2. Open **Claude.ai** (your subscription). Paste the **same** prompt. Copy Claude's reply.
+3. Open **`index.html`** from this folder in your browser. Paste both replies in and score each using the rubric.
+4. Decide which draft needs the least editing before you'd actually send it.
 
-The script asks both models to write a 3-sentence marketing hook for an AI scheduling tool targeting busy executives, then scores the output:
-
-| Criterion | Points |
-|-----------|--------|
-| Follows 3-sentence format | 0–2 |
-| Uses persuasive language (quantified benefits, emotional hooks) | 0–2 |
-| Targets executives specifically | 0–2 |
-| Ends with a clear, specific call to action | 0–2 |
-| Concise and clear (20–80 words, no jargon) | 0–2 |
-| **Total** | **0–10** |
-
-The scoring checks for:
-- **Persuasion markers:** "80%", "save", "reclaim", "transform", "effortless"
-- **Executive language:** "leader", "busy", "C-suite", "strategic", "hours back"
-- **CTA phrases:** "sign up", "try", "book a demo", "get started", "today"
-
-## The Prompt
+## The example prompt
+Copy this exactly into both LM Studio and Claude.ai:
 
 ```
-Write a 3-sentence marketing hook for: an AI scheduling tool that cuts
-meeting-booking time by 80%. Target: busy executives.
-End with a clear call to action.
+You are a customer support agent for an online electronics store. Read the customer's email below and draft a warm, professional reply that acknowledges the problem, gives a clear next step, and sets a realistic expectation. Keep it under 150 words.
+
+Customer email:
+"Hi, I ordered a wireless keyboard (order #ORD-5582) last Tuesday and it still hasn't arrived. The tracking page hasn't updated in three days. I need it for work — can you tell me where it is and when I'll get it?"
 ```
 
-## How to Run
+## Scoring rubric
+| Criterion | Scale |
+|-----------|-------|
+| Correct solution proposed | yes / no |
+| Tone matches brand | 1–5 |
+| Reply length appropriate | 1–5 |
+| Needs major edits | yes / no |
 
-### Prerequisites
+## Make it your own
+- Swap in a real (anonymised) customer email you get often.
+- Paste a couple of your best past replies first so the model copies your voice.
+- Add a rule like 'always offer a discount code if delivery is late'.
 
-1. **Ollama** running locally:
-   ```bash
-   ollama serve
-   ollama pull llama3.2
-   ```
+## Optional — automate it with the API (advanced)
+You do **not** need any of this to complete the hands-on — it's here as a reference for
+anyone who wants to run the same comparison automatically later.
 
-2. **Python 3.9+** with dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+`main.py` sends the example prompt to a local model (via LM Studio / Ollama) **and** to
+Claude through the Anthropic API, times both, and prints a side-by-side score table.
 
-3. **Environment variables:**
-   ```bash
-   cp .env.example .env
-   # Add your ANTHROPIC_API_KEY
-   export $(cat .env | xargs)
-   ```
+### What it measures
+| What it checks | How |
+|----------------|-----|
+| **Acknowledges issue** | Names the delayed order / missing tracking |
+| **Clear next step** | Says what will happen next |
+| **Sets expectation** | Gives a realistic timeframe |
+| **Right length & tone** | Under ~150 words, warm and professional |
 
-### Run
+The scoring is simple and deterministic so you can reproduce it without a second
+LLM-as-judge call.
 
+### Run it (optional)
 ```bash
+# 1. Start a local model server (LM Studio's local server, or Ollama):
+ollama serve
+ollama pull llama3.2
+
+# 2. Install the Python packages:
+pip install -r requirements.txt
+
+# 3. Add your Anthropic API key (separate from your Claude.ai subscription):
+cp .env.example .env        # then edit .env and paste your key
+
+# 4. Run it:
+export $(cat .env | xargs)
 python main.py
 ```
 
-### Expected Output (abridged)
-
-```
-======================================================================
-  BENCHMARK RESULTS — Marketing Copy Generator
-======================================================================
-+---------------------------+-------------------+-------------------------------+
-| Metric                    | Ollama (llama3.2) | Claude (claude-haiku-3-5-...) |
-+===========================+===================+===============================+
-| Response Time (s)         | 2.91              | 1.23                          |
-| Word Count                | 52                | 48                            |
-| Sentence Count            | 3                 | 3                             |
-| --- QUALITY SCORES ---    |                   |                               |
-| 3-sentence format (0-2)   | 2                 | 2                             |
-| Persuasive language (0-2) | 1                 | 2                             |
-| Executive targeting (0-2) | 1                 | 2                             |
-| Clear CTA present (0-2)   | 2                 | 2                             |
-| Clarity / conciseness(0-2)| 2                 | 2                             |
-| TOTAL QUALITY SCORE (/10) | 8                 | 10                            |
-+---------------------------+-------------------+-------------------------------+
-
---- Ollama Copy ---
-Stop wasting hours scheduling meetings. Our AI tool cuts booking time by 80%,
-giving busy executives more time for strategic work. Try it free today.
-
---- Claude Copy ---
-As a busy executive, every minute counts — yet scheduling alone devours hours
-you could spend leading. Our AI scheduling tool slashes meeting-booking time by
-80%, seamlessly handling coordination while you focus on what matters.
-Start your free trial today and reclaim your calendar.
-```
-
-## Key Takeaways to Discuss
-
-- Does the local model use quantified benefits ("80%") or vague superlatives?
-- Which model writes a CTA that feels urgent vs generic?
-- For high-volume ad variation testing, does cost savings outweigh quality delta?
-- How would you A/B test these outputs to measure real conversion rates?
+Results are also written to `results.json`. Again — this is optional; the course only
+needs the steps under **Use it with your Claude.ai subscription** above.

@@ -1,104 +1,83 @@
-# Sample 02 — Code Review Benchmark
+# HO1 Sample 2 — Invoice Extraction
 
-## Problem Statement
+## What you'll build
+A side-by-side test of how well a free local model (in LM Studio) and **Claude.ai** can read a messy invoice and pull out the important fields as clean data. You paste the **same** invoice into both, then score which one got the vendor, date, total and line items right.
 
-Your dev team wants to know if a local model catches basic bugs. Run a buggy Python snippet through Ollama and Claude, score each review for correctness and completeness.
+## Use it with your Claude.ai subscription
+No API key needed. Just your normal Claude.ai login.
 
-## What It Measures
+1. Open **LM Studio** and load any small model (e.g. Llama 3.2). Paste the example prompt below into its chat. Copy the reply.
+2. Open **Claude.ai** (your subscription). Paste the **same** prompt. Copy Claude's reply.
+3. Open **`index.html`** from this folder in your browser. Paste both replies in and score each using the rubric.
+4. Check the JSON each model produced against the invoice and mark what's correct.
 
-The script sends a Python function with **three intentional bugs** to both models and scores their reviews:
+## The example prompt
+Copy this exactly into both LM Studio and Claude.ai:
 
-| Bug | Description |
-|-----|-------------|
-| `ZeroDivisionError` | `calculate_average([])` crashes — no empty-list guard |
-| No type validation | Non-numeric inputs would cause a `TypeError` |
-| Integer division risk | In Python 2 `/` would floor-divide; reviewers should note this |
+```
+You are an accounts-payable assistant. Read the invoice text below and return ONLY a JSON object with these fields:
+- vendor (string)
+- invoice_date (in YYYY-MM-DD format)
+- total_amount (a number, no currency symbol)
+- line_items (an array of objects with description, quantity, unit_price)
 
-### Scoring Rubric (max 10 points)
-
-| Criterion | Points |
-|-----------|--------|
-| Catches the ZeroDivisionError / empty list crash | 0–2 |
-| Mentions type/input validation | 0–1 |
-| Mentions integer vs float division | 0–1 |
-| Proposes concrete fix (guard clause or try/except) | 0–2 |
-| Provides corrected code snippet | 0–2 |
-| Completeness (raises multiple distinct issues) | 0–2 |
-
-## The Prompt
-
-```python
-Review this Python function for bugs and suggest fixes:
-
-def calculate_average(numbers):
-    total = 0
-    for n in numbers:
-        total += n
-    return total / len(numbers)
-
-print(calculate_average([]))
+Invoice:
+"NORTHWIND SUPPLIES LTD
+Invoice #INV-20418   Date: 14 March 2026
+Bill to: Riverside Cafe
+2x Espresso Beans 1kg @ 18.50
+5x Oat Milk 1L @ 2.20
+1x Delivery @ 6.00
+Total due: GBP 54.00"
 ```
 
-## How to Run
+## Scoring rubric
+| Criterion | Scale |
+|-----------|-------|
+| All 4 fields extracted (vendor, date, amount, line-items) | yes / no |
+| Line items correct | 1–5 |
+| Output format clean (valid JSON) | 1–5 |
+| Hallucinations present | yes / no |
 
-### Prerequisites
+## Make it your own
+- Swap in a real (anonymised) invoice from one of your own suppliers.
+- Add fields you actually need — e.g. tax amount, PO number, due date.
+- Ask for CSV instead of JSON if that's easier to paste into your spreadsheet.
 
-1. **Ollama** running locally with `llama3.2` pulled:
-   ```bash
-   ollama serve
-   ollama pull llama3.2
-   ```
+## Optional — automate it with the API (advanced)
+You do **not** need any of this to complete the hands-on — it's here as a reference for
+anyone who wants to run the same comparison automatically later.
 
-2. **Python 3.9+** with dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+`main.py` sends the example prompt to a local model (via LM Studio / Ollama) **and** to
+Claude through the Anthropic API, times both, and prints a side-by-side score table.
 
-3. **Environment variables:**
-   ```bash
-   cp .env.example .env
-   # Add your ANTHROPIC_API_KEY
-   export $(cat .env | xargs)
-   ```
+### What it measures
+| What it checks | How |
+|----------------|-----|
+| **Valid JSON** | Output parses as JSON with no extra text |
+| **All fields present** | vendor, invoice_date, total_amount, line_items |
+| **Date normalised** | Free-text date turned into YYYY-MM-DD |
+| **Line items correct** | Right count, quantities and prices |
 
-### Run the benchmark
+The scoring is simple and deterministic so you can reproduce it without a second
+LLM-as-judge call.
 
+### Run it (optional)
 ```bash
+# 1. Start a local model server (LM Studio's local server, or Ollama):
+ollama serve
+ollama pull llama3.2
+
+# 2. Install the Python packages:
+pip install -r requirements.txt
+
+# 3. Add your Anthropic API key (separate from your Claude.ai subscription):
+cp .env.example .env        # then edit .env and paste your key
+
+# 4. Run it:
+export $(cat .env | xargs)
 python main.py
 ```
 
-### Expected Output
-
-```
-HO1 Sample 02 — Code Review Benchmark
-Prompt snippet: Review calculate_average() for bugs...
-
-[Ollama] Sending code review prompt to llama3.2 ...
-[Ollama] Done in 5.14s — 312 output tokens.
-[Claude] Sending code review prompt to claude-haiku-3-5-20251001 ...
-[Claude] Done in 2.01s — 289 output tokens. Cost: $0.001213
-
-======================================================================
-  BENCHMARK RESULTS — Code Review
-======================================================================
-+---------------------------------------+-------------------+-------------------------------+
-| Metric                                | Ollama (llama3.2) | Claude (claude-haiku-3-5-...) |
-+=======================================+===================+===============================+
-| Response Time (s)                     | 5.14              | 2.01                          |
-| ...                                   | ...               | ...                           |
-| ZeroDivision bug found (0-2)          | 2                 | 2                             |
-| Type validation mentioned (0-1)       | 0                 | 1                             |
-| Int/float division (0-1)              | 0                 | 1                             |
-| Concrete fix proposed (0-2)           | 2                 | 2                             |
-| Code snippet provided (0-2)           | 2                 | 2                             |
-| Completeness / multiple issues (0-2)  | 1                 | 2                             |
-| TOTAL QUALITY SCORE (/10)             | 7                 | 10                            |
-+---------------------------------------+-------------------+-------------------------------+
-```
-
-## Key Takeaways to Discuss
-
-- Does the local model find the critical ZeroDivisionError?
-- Does Claude spot the deeper type validation gap?
-- For CI/CD lint-style reviews, is the local model "good enough"?
-- At what complexity of code does the quality gap widen?
+Results are also written to `results.json`. Again — this is optional; the course only
+needs the steps under **Use it with your Claude.ai subscription** above.

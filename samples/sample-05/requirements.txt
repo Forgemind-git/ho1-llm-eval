@@ -1,3 +1,5 @@
+# OPTIONAL — these are only needed to run main.py (the optional automation).
+# You do NOT need them for the course: the hands-on uses your Claude.ai subscription.
 anthropic
 requests
 tabulate

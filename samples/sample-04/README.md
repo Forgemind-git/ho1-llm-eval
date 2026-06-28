@@ -1,92 +1,73 @@
-# Sample 04 — Meeting Note Summariser
+# HO1 Sample 4 — Document Redaction
 
-## Problem Statement
+## What you'll build
+A side-by-side test of privacy redaction. You give the **same** sensitive document to a free local model (in LM Studio) and to **Claude.ai**, then score which one removed every piece of personal information without wrecking the medical details you need to keep.
 
-Your team wants to automate meeting summaries. Benchmark Ollama vs Claude on a real transcript — score for completeness and action-item capture.
+## Use it with your Claude.ai subscription
+No API key needed. Just your normal Claude.ai login.
 
-## What It Measures
+1. Open **LM Studio** and load any small model (e.g. Llama 3.2). Paste the example prompt below into its chat. Copy the reply.
+2. Open **Claude.ai** (your subscription). Paste the **same** prompt. Copy Claude's reply.
+3. Open **`index.html`** from this folder in your browser. Paste both replies in and score each using the rubric.
+4. Check that names, dates and IDs are gone but the medical facts are untouched.
 
-The script sends a sprint planning transcript to both models and scores the summary on:
-
-| Criterion | Points |
-|-----------|--------|
-| Meeting date/context captured | 0–1 |
-| All attendees named (Sarah, Dev, Ana) | 0–2 |
-| Goal stated (dashboard ships March) | 0–2 |
-| Ana's action items captured (mockups/design specs by Friday) | 0–2 |
-| Sarah's action items captured (chase API docs/backend by EOD) | 0–2 |
-| Structured format (bullets or headers used) | 0–1 |
-| **Total** | **0–10** |
-
-## The Prompt
+## The example prompt
+Copy this exactly into both LM Studio and Claude.ai:
 
 ```
-Summarise this meeting and list action items with owners.
-Meeting: Sprint planning, 15 Jan. Present: Sarah (PM), Dev (Lead), Ana (Design).
-Sarah: Dashboard ships end of March. Dev: 4 weeks out, need design specs.
-Ana: Mockups ready Friday. Dev: Also need API docs. Sarah: Will chase backend by EOD.
+You are a privacy redaction tool. Rewrite the text below, replacing every piece of personally identifiable information with a label in square brackets: [NAME], [DATE_OF_BIRTH], [ADDRESS], [PHONE], [EMAIL], [ID_NUMBER]. Keep all medical and clinical details exactly as written — do NOT redact symptoms, diagnoses, or medication names.
+
+Text:
+"Patient Maria Gonzalez, DOB 03/07/1984, lives at 42 Elm Street, Leeds. Phone 07700 900123, email maria.g@example.com. NHS number 945 220 1864. Diagnosed with type 2 diabetes; prescribed metformin 500mg twice daily."
 ```
 
-## Expected Action Items
+## Scoring rubric
+| Criterion | Scale |
+|-----------|-------|
+| All names redacted | yes / no |
+| All dates / IDs redacted | yes / no |
+| Medical terms preserved (not over-redacted) | yes / no |
+| False positives count | 0 / 1-2 / 3+ |
 
-| Action Item | Owner |
-|-------------|-------|
-| Deliver design specs / mockups by Friday | Ana |
-| Provide API documentation | Sarah (to chase Dev/backend) |
-| Chase backend team by EOD | Sarah |
+## Make it your own
+- Paste a real (test) record from your own system to see how it copes.
+- Add or rename labels to match your policy — e.g. [PATIENT_ID] instead of [ID_NUMBER].
+- Tighten the 'keep the medical details' instruction if it over-redacts.
 
-## How to Run
+## Optional — automate it with the API (advanced)
+You do **not** need any of this to complete the hands-on — it's here as a reference for
+anyone who wants to run the same comparison automatically later.
 
-### Prerequisites
+`main.py` sends the example prompt to a local model (via LM Studio / Ollama) **and** to
+Claude through the Anthropic API, times both, and prints a side-by-side score table.
 
-1. **Ollama** running locally:
-   ```bash
-   ollama serve
-   ollama pull llama3.2
-   ```
+### What it measures
+| What it checks | How |
+|----------------|-----|
+| **Names removed** | Patient name replaced with [NAME] |
+| **Dates / IDs removed** | DOB and NHS number replaced |
+| **Contact details removed** | Address, phone and email replaced |
+| **Medical kept** | diabetes / metformin still present, not redacted |
 
-2. **Python 3.9+** with dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+The scoring is simple and deterministic so you can reproduce it without a second
+LLM-as-judge call.
 
-3. **Environment variables:**
-   ```bash
-   cp .env.example .env
-   # Add your ANTHROPIC_API_KEY
-   export $(cat .env | xargs)
-   ```
-
-### Run
-
+### Run it (optional)
 ```bash
+# 1. Start a local model server (LM Studio's local server, or Ollama):
+ollama serve
+ollama pull llama3.2
+
+# 2. Install the Python packages:
+pip install -r requirements.txt
+
+# 3. Add your Anthropic API key (separate from your Claude.ai subscription):
+cp .env.example .env        # then edit .env and paste your key
+
+# 4. Run it:
+export $(cat .env | xargs)
 python main.py
 ```
 
-### Expected Output (abridged)
-
-```
-======================================================================
-  BENCHMARK RESULTS — Meeting Note Summariser
-======================================================================
-+------------------------------------+-------------------+-------------------------------+
-| Metric                             | Ollama (llama3.2) | Claude (claude-haiku-3-5-...) |
-+====================================+===================+===============================+
-| Response Time (s)                  | 3.88              | 1.54                          |
-| ...                                | ...               | ...                           |
-| Date/context captured (0-1)        | 1                 | 1                             |
-| Attendees named (0-2)              | 2                 | 2                             |
-| Goal stated dashboard/March (0-2)  | 2                 | 2                             |
-| Ana action items captured (0-2)    | 2                 | 2                             |
-| Sarah action items captured (0-2)  | 1                 | 2                             |
-| Structured format (0-1)            | 1                 | 1                             |
-| TOTAL QUALITY SCORE (/10)          | 9                 | 10                            |
-+------------------------------------+-------------------+-------------------------------+
-```
-
-## Key Takeaways to Discuss
-
-- Does the local model correctly attribute action items to the right owner?
-- How does output structure (bullets vs prose) differ between models?
-- For high-volume daily standups, is a local model accurate enough?
-- What's the per-summary cost of using Claude Haiku vs local?
+Results are also written to `results.json`. Again — this is optional; the course only
+needs the steps under **Use it with your Claude.ai subscription** above.
