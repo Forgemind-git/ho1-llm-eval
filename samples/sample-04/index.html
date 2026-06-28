@@ -3,21 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sample 04 — Document Redaction | HO1 Starter</title>
+  <title>Sample 04 — Document Redaction | HO1</title>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#F8F9FA; color:#1a1a2e; }
-    :root { --color:#1D4ED8; }
+    :root { --color:#DC2626; }
     header { background:var(--color); color:#fff; padding:36px 32px 28px; }
-    header .back { font-size:13px; opacity:.75; text-decoration:none; color:#fff; display:inline-flex; align-items:center; gap:6px; margin-bottom:14px; }
+    header .back { font-size:13px; opacity:.85; text-decoration:none; color:#fff; display:inline-flex; align-items:center; gap:6px; margin-bottom:14px; }
     header .back:hover { opacity:1; }
-    header .badge { font-size:12px; font-weight:700; letter-spacing:.08em; opacity:.75; text-transform:uppercase; margin-bottom:6px; }
+    header .badge { font-size:12px; font-weight:700; letter-spacing:.08em; opacity:.8; text-transform:uppercase; margin-bottom:6px; }
     header h1 { font-size:24px; font-weight:800; margin-bottom:6px; }
-    header p { font-size:14px; opacity:.85; max-width:640px; line-height:1.6; }
+    header p { font-size:14px; opacity:.9; max-width:640px; line-height:1.6; }
     .container { max-width:860px; margin:0 auto; padding:32px 24px 60px; }
     .section { background:#fff; border-radius:10px; box-shadow:0 1px 6px rgba(0,0,0,.08); padding:24px 28px; margin-bottom:24px; }
     .section h2 { font-size:16px; font-weight:700; color:var(--color); margin-bottom:16px; border-bottom:2px solid #EEF2FF; padding-bottom:10px; }
-    .todo-note { background:#FEF3C7; border-left:4px solid #D97706; padding:12px 16px; border-radius:4px; font-size:13px; color:#92400E; margin-bottom:16px; line-height:1.6; }
+    .nokey { background:#ECFDF5; border-left:4px solid #059669; padding:10px 16px; border-radius:4px; font-size:13px; color:#065F46; margin-bottom:16px; font-weight:600; }
+    .steps { font-size:14px; color:#374151; line-height:1.8; padding-left:20px; }
+    .steps li { margin-bottom:4px; }
+    .prompt-box { position:relative; background:#0f172a; color:#e2e8f0; padding:16px 18px; border-radius:8px; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:13px; line-height:1.6; white-space:pre-wrap; }
+    .copy-btn { position:absolute; top:10px; right:10px; background:var(--color); color:#fff; border:none; border-radius:6px; padding:5px 12px; font-size:12px; font-weight:600; cursor:pointer; }
+    .hint { font-size:13px; color:#6B7280; margin-bottom:14px; line-height:1.6; }
     textarea { width:100%; border:1px solid #D1D5DB; border-radius:6px; padding:12px 14px; font-size:13px; font-family:inherit; color:#374151; line-height:1.6; resize:vertical; }
     textarea:focus { outline:2px solid var(--color); border-color:var(--color); }
     .model-tabs { display:flex; gap:10px; margin-bottom:16px; }
@@ -34,7 +39,6 @@
     .score-display { font-size:22px; font-weight:800; color:var(--color); }
     .score-display span { font-size:13px; font-weight:400; color:#6B7280; }
     .winner-select { width:100%; padding:10px 14px; border:1px solid #D1D5DB; border-radius:6px; font-size:14px; color:#374151; margin-bottom:14px; }
-    .winner-select:focus { outline:2px solid var(--color); }
     .dl-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:var(--color); color:#fff; border:none; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer; margin-top:16px; }
     .dl-btn:hover { opacity:.88; }
     table.comp-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:12px; }
@@ -42,213 +46,124 @@
     .comp-table td { padding:10px 14px; border-bottom:1px solid #E5E7EB; color:#374151; }
     .comp-table td[contenteditable=true] { background:#FAFAFA; min-width:80px; }
     .comp-table td[contenteditable=true]:focus { background:#EEF2FF; outline:2px solid var(--color); }
-    .comp-table tr:last-child td { border-bottom:none; font-weight:700; }
-</style>
+  </style>
 </head>
 <body>
 <header>
-  <a href="../../index.html" class="back">← Back to HO1</a>
-  <div class="badge">HO1 · Sample 04 · Starter</div>
+  <a href="../../index.html" class="back">&larr; Back to HO1</a>
+  <div class="badge">HO1 &middot; Sample 04</div>
   <h1>Document Redaction</h1>
-  <p>Your clinic must keep patient data on-premises. Run 20 sensitive documents through a local model and Claude for PII redaction, then score recall and precision of what was redacted.</p>
+  <p>A side-by-side test of privacy redaction. You give the same sensitive document to a free local model (in LM Studio) and to Claude.ai, then score which one removed every piece of personal information without wrecking the medical details you need to keep.</p>
 </header>
 
 <div class="container">
 
-  <!-- Test Prompt -->
   <div class="section">
-    <h2>Test Prompt</h2>
-    <div class="todo-note">Write the prompt you will paste into BOTH LM Studio and Claude.ai. Use the same prompt for both so the comparison is fair.</div>
-    <textarea id="test-prompt" rows="6" placeholder="[TODO: write your test prompt here — what will you give to both models?]"></textarea>
+    <h2>Use it with your Claude.ai subscription</h2>
+    <div class="nokey">No API key needed. Just your normal Claude.ai login.</div>
+    <ol class="steps"><li>Open LM Studio and load any small model (e.g. Llama 3.2). Paste the example prompt below into its chat. Copy the reply.</li><li>Open Claude.ai (your subscription). Paste the same prompt. Copy Claude&#x27;s reply.</li><li>Open index.html from this folder in your browser. Paste both replies in and score each using the rubric.</li><li>Check that names, dates and IDs are gone but the medical facts are untouched.</li></ol>
   </div>
 
-  <!-- LM Studio Output -->
   <div class="section">
-    <h2>LM Studio — Raw Output</h2>
-    <div class="todo-note">Run your prompt in LM Studio. Paste the full response below before scoring.</div>
-    <textarea rows="8" placeholder="[TODO: paste LM Studio response here]"></textarea>
+    <h2>The example prompt</h2>
+    <p class="hint">Copy this exactly into <strong>both</strong> LM Studio and Claude.ai so the comparison is fair.</p>
+    <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt()">Copy</button><span id="prompt-text">You are a privacy redaction tool. Rewrite the text below, replacing every piece of personally identifiable information with a label in square brackets: [NAME], [DATE_OF_BIRTH], [ADDRESS], [PHONE], [EMAIL], [ID_NUMBER]. Keep all medical and clinical details exactly as written — do NOT redact symptoms, diagnoses, or medication names.
+
+Text:
+&quot;Patient Maria Gonzalez, DOB 03/07/1984, lives at 42 Elm Street, Leeds. Phone 07700 900123, email maria.g@example.com. NHS number 945 220 1864. Diagnosed with type 2 diabetes; prescribed metformin 500mg twice daily.&quot;</span></div>
   </div>
 
-  <!-- Claude.ai Output -->
   <div class="section">
-    <h2>Claude.ai — Raw Output</h2>
-    <div class="todo-note">Run the same prompt in Claude.ai. Paste the full response below before scoring.</div>
-    <textarea rows="8" placeholder="[TODO: paste Claude.ai response here]"></textarea>
+    <h2>LM Studio — paste its reply</h2>
+    <p class="hint">Run the prompt in LM Studio, then paste the full response here before scoring.</p>
+    <textarea rows="8" placeholder="Paste the LM Studio reply here"></textarea>
   </div>
 
-  <!-- Scorecard -->
   <div class="section">
-    <h2>Score Your Results</h2>
+    <h2>Claude.ai — paste its reply</h2>
+    <p class="hint">Run the same prompt in Claude.ai, then paste the full response here before scoring.</p>
+    <textarea rows="8" placeholder="Paste the Claude.ai reply here"></textarea>
+  </div>
+
+  <div class="section">
+    <h2>Score your results</h2>
     <div class="model-tabs">
       <div class="model-tab active" id="tab-lm" onclick="switchTab('lm')">LM Studio</div>
       <div class="model-tab" id="tab-cl" onclick="switchTab('cl')">Claude.ai</div>
     </div>
-    <div id="scorecard-lm" class="scorecard" data-model="lm" >
-<div class="criterion">
-  <div class="criterion-label">1. All names redacted (yes / no)</div>
-  <div class="radio-group"><label><input type="radio" name="lm-c1" value="Yes" onchange="calcScore('lm')"> Yes</label><label><input type="radio" name="lm-c1" value="No" onchange="calcScore('lm')"> No</label></div>
-</div>
-<div class="criterion">
-  <div class="criterion-label">2. All dates redacted (yes / no)</div>
-  <div class="radio-group"><label><input type="radio" name="lm-c2" value="Yes" onchange="calcScore('lm')"> Yes</label><label><input type="radio" name="lm-c2" value="No" onchange="calcScore('lm')"> No</label></div>
-</div>
-<div class="criterion">
-  <div class="criterion-label">3. Medical terms preserved (yes / no)</div>
-  <div class="radio-group"><label><input type="radio" name="lm-c3" value="Yes" onchange="calcScore('lm')"> Yes</label><label><input type="radio" name="lm-c3" value="No" onchange="calcScore('lm')"> No</label></div>
-</div>
-<div class="criterion">
-  <div class="criterion-label">4. False positives count (0 / 1–2 / 3+)</div>
-  <div class="radio-group"><label><input type="radio" name="lm-c4" value="0" onchange="calcScore('lm')"> 0</label><label><input type="radio" name="lm-c4" value="1–2" onchange="calcScore('lm')"> 1–2</label><label><input type="radio" name="lm-c4" value="3+" onchange="calcScore('lm')"> 3+</label></div>
-</div>
-<div class="score-row">
-  <div>LM Studio — criteria answered</div>
-  <div class="score-display" id="lm-total">0 / 4 <span>criteria answered</span></div>
-</div>
-</div>
-    <div id="scorecard-cl" class="scorecard" data-model="cl" style="display:none">
-<div class="criterion">
-  <div class="criterion-label">1. All names redacted (yes / no)</div>
-  <div class="radio-group"><label><input type="radio" name="cl-c1" value="Yes" onchange="calcScore('cl')"> Yes</label><label><input type="radio" name="cl-c1" value="No" onchange="calcScore('cl')"> No</label></div>
-</div>
-<div class="criterion">
-  <div class="criterion-label">2. All dates redacted (yes / no)</div>
-  <div class="radio-group"><label><input type="radio" name="cl-c2" value="Yes" onchange="calcScore('cl')"> Yes</label><label><input type="radio" name="cl-c2" value="No" onchange="calcScore('cl')"> No</label></div>
-</div>
-<div class="criterion">
-  <div class="criterion-label">3. Medical terms preserved (yes / no)</div>
-  <div class="radio-group"><label><input type="radio" name="cl-c3" value="Yes" onchange="calcScore('cl')"> Yes</label><label><input type="radio" name="cl-c3" value="No" onchange="calcScore('cl')"> No</label></div>
-</div>
-<div class="criterion">
-  <div class="criterion-label">4. False positives count (0 / 1–2 / 3+)</div>
-  <div class="radio-group"><label><input type="radio" name="cl-c4" value="0" onchange="calcScore('cl')"> 0</label><label><input type="radio" name="cl-c4" value="1–2" onchange="calcScore('cl')"> 1–2</label><label><input type="radio" name="cl-c4" value="3+" onchange="calcScore('cl')"> 3+</label></div>
-</div>
-<div class="score-row">
-  <div>Claude.ai — criteria answered</div>
-  <div class="score-display" id="cl-total">0 / 4 <span>criteria answered</span></div>
-</div>
-</div>
+    <div id="scorecard-lm" class="scorecard" data-model="lm"><div class="criterion"><div class="criterion-label">1. All names redacted</div><div class="radio-group"><label><input type="radio" name="lm-c1" value="yes" onchange="calcScore('lm')"> yes</label><label><input type="radio" name="lm-c1" value="no" onchange="calcScore('lm')"> no</label></div></div><div class="criterion"><div class="criterion-label">2. All dates / IDs redacted</div><div class="radio-group"><label><input type="radio" name="lm-c2" value="yes" onchange="calcScore('lm')"> yes</label><label><input type="radio" name="lm-c2" value="no" onchange="calcScore('lm')"> no</label></div></div><div class="criterion"><div class="criterion-label">3. Medical terms preserved (not over-redacted)</div><div class="radio-group"><label><input type="radio" name="lm-c3" value="yes" onchange="calcScore('lm')"> yes</label><label><input type="radio" name="lm-c3" value="no" onchange="calcScore('lm')"> no</label></div></div><div class="criterion"><div class="criterion-label">4. False positives count</div><div class="radio-group"><label><input type="radio" name="lm-c4" value="0" onchange="calcScore('lm')"> 0</label><label><input type="radio" name="lm-c4" value="1-2" onchange="calcScore('lm')"> 1-2</label><label><input type="radio" name="lm-c4" value="3+" onchange="calcScore('lm')"> 3+</label></div></div><div class="score-row"><div>LM Studio — criteria answered</div><div class="score-display" id="lm-total">0 / 4 <span>criteria answered</span></div></div></div>
+    <div id="scorecard-cl" class="scorecard" data-model="cl" style="display:none"><div class="criterion"><div class="criterion-label">1. All names redacted</div><div class="radio-group"><label><input type="radio" name="cl-c1" value="yes" onchange="calcScore('cl')"> yes</label><label><input type="radio" name="cl-c1" value="no" onchange="calcScore('cl')"> no</label></div></div><div class="criterion"><div class="criterion-label">2. All dates / IDs redacted</div><div class="radio-group"><label><input type="radio" name="cl-c2" value="yes" onchange="calcScore('cl')"> yes</label><label><input type="radio" name="cl-c2" value="no" onchange="calcScore('cl')"> no</label></div></div><div class="criterion"><div class="criterion-label">3. Medical terms preserved (not over-redacted)</div><div class="radio-group"><label><input type="radio" name="cl-c3" value="yes" onchange="calcScore('cl')"> yes</label><label><input type="radio" name="cl-c3" value="no" onchange="calcScore('cl')"> no</label></div></div><div class="criterion"><div class="criterion-label">4. False positives count</div><div class="radio-group"><label><input type="radio" name="cl-c4" value="0" onchange="calcScore('cl')"> 0</label><label><input type="radio" name="cl-c4" value="1-2" onchange="calcScore('cl')"> 1-2</label><label><input type="radio" name="cl-c4" value="3+" onchange="calcScore('cl')"> 3+</label></div></div><div class="score-row"><div>Claude.ai — criteria answered</div><div class="score-display" id="cl-total">0 / 4 <span>criteria answered</span></div></div></div>
   </div>
 
-  <!-- Comparison Table -->
   <div class="section">
-    <h2>Comparison Table</h2>
-    <p style="font-size:13px;color:#6B7280;margin-bottom:4px;">Scores fill in automatically as you select above. Click any notes cell to type observations.</p>
+    <h2>Comparison table</h2>
+    <p class="hint">Scores fill in automatically as you select above. Click any notes cell to type observations.</p>
     <table class="comp-table" id="comp-table">
-      <tr>
-        <th>Criterion</th>
-        <th>LM Studio score</th>
-        <th>LM Studio notes</th>
-        <th>Claude.ai score</th>
-        <th>Claude.ai notes</th>
-      </tr>
-      <tr>
-  <td>All names redacted</td>
-  <td contenteditable="true" id="t-lm-1"></td>
-  <td contenteditable="true"></td>
-  <td contenteditable="true" id="t-cl-1"></td>
-  <td contenteditable="true"></td>
-</tr>
-<tr>
-  <td>All dates redacted</td>
-  <td contenteditable="true" id="t-lm-2"></td>
-  <td contenteditable="true"></td>
-  <td contenteditable="true" id="t-cl-2"></td>
-  <td contenteditable="true"></td>
-</tr>
-<tr>
-  <td>Medical terms preserved</td>
-  <td contenteditable="true" id="t-lm-3"></td>
-  <td contenteditable="true"></td>
-  <td contenteditable="true" id="t-cl-3"></td>
-  <td contenteditable="true"></td>
-</tr>
-<tr>
-  <td>False positives count</td>
-  <td contenteditable="true" id="t-lm-4"></td>
-  <td contenteditable="true"></td>
-  <td contenteditable="true" id="t-cl-4"></td>
-  <td contenteditable="true"></td>
-</tr>
-<tr>
-  <td><strong>Summary</strong></td>
-  <td id="t-lm-sum">—</td>
-  <td contenteditable="true"></td>
-  <td id="t-cl-sum">—</td>
-  <td contenteditable="true"></td>
-</tr>
+      <tr><th>Criterion</th><th>LM Studio score</th><th>LM Studio notes</th><th>Claude.ai score</th><th>Claude.ai notes</th></tr>
+      <tr><td>All names redacted</td><td contenteditable="true" id="t-lm-1"></td><td contenteditable="true"></td><td contenteditable="true" id="t-cl-1"></td><td contenteditable="true"></td></tr><tr><td>All dates / IDs redacted</td><td contenteditable="true" id="t-lm-2"></td><td contenteditable="true"></td><td contenteditable="true" id="t-cl-2"></td><td contenteditable="true"></td></tr><tr><td>Medical terms preserved (not over-redacted)</td><td contenteditable="true" id="t-lm-3"></td><td contenteditable="true"></td><td contenteditable="true" id="t-cl-3"></td><td contenteditable="true"></td></tr><tr><td>False positives count</td><td contenteditable="true" id="t-lm-4"></td><td contenteditable="true"></td><td contenteditable="true" id="t-cl-4"></td><td contenteditable="true"></td></tr><tr><td><strong>Answered</strong></td><td id="t-lm-sum">—</td><td contenteditable="true"></td><td id="t-cl-sum">—</td><td contenteditable="true"></td></tr>
     </table>
   </div>
 
-  <!-- Winner -->
   <div class="section">
     <h2>Winner</h2>
-    <div class="todo-note">Based on your scores, which model wins for this use case?</div>
+    <p class="hint">Based on your scores, which model wins for this use case?</p>
     <select class="winner-select" id="winner-select">
       <option value="">-- pick a winner --</option>
       <option value="LM Studio">LM Studio</option>
       <option value="Claude.ai">Claude.ai</option>
       <option value="Tie">Tie</option>
     </select>
-    <textarea id="winner-reasoning" rows="4" placeholder="[TODO: explain your reasoning — consider quality, speed, cost, and fit for the use case]"></textarea>
+    <textarea id="winner-reasoning" rows="4" placeholder="Explain your reasoning — think about quality, speed, and fit for the job."></textarea>
     <br>
-    <button class="dl-btn" onclick="downloadCSV()">Download Results as CSV</button>
+    <button class="dl-btn" onclick="downloadCSV()">Download results as CSV</button>
   </div>
 
+  <p class="hint" style="text-align:center">Optional: <code>main.py</code> in this folder can run this same comparison automatically. It needs an Anthropic API key (separate from your Claude.ai subscription) and is not required for the course.</p>
 </div>
 
 <script>
-
+function copyPrompt() {
+  const t = document.getElementById('prompt-text').innerText;
+  navigator.clipboard.writeText(t);
+  const b = document.querySelector('.copy-btn'); b.textContent = 'Copied!'; setTimeout(() => b.textContent = 'Copy', 1500);
+}
 function switchTab(model) {
   document.getElementById('scorecard-lm').style.display = model === 'lm' ? 'grid' : 'none';
   document.getElementById('scorecard-cl').style.display = model === 'cl' ? 'grid' : 'none';
   document.getElementById('tab-lm').className = 'model-tab' + (model === 'lm' ? ' active' : '');
   document.getElementById('tab-cl').className = 'model-tab' + (model === 'cl' ? ' active' : '');
 }
-
 function calcScore(model) {
-  let total = 0;
   let answered = 0;
   const rows = document.querySelectorAll(`[data-model="${model}"] .criterion`);
   rows.forEach((row, i) => {
     const sel = row.querySelector('input[type=radio]:checked');
     const cell = document.querySelector(`#t-${model}-${i+1}`);
-    if (sel) {
-      answered++;
-      const v = parseFloat(sel.value) || 0;
-      total += v;
-      if (cell) cell.textContent = sel.value;
-    }
+    if (sel) { answered++; if (cell) cell.textContent = sel.value; }
   });
   const totalEl = document.getElementById(`${model}-total`);
   if (totalEl) totalEl.innerHTML = `${answered} / ${rows.length} <span>criteria answered</span>`;
   const sumEl = document.getElementById(`t-${model}-sum`);
   if (sumEl) sumEl.textContent = `${answered}/${rows.length}`;
 }
-
 function downloadCSV() {
   const rows = [];
-  const prompt = document.getElementById('test-prompt')?.value || '';
-  rows.push(['Test Prompt', prompt]);
+  rows.push(['Sample', 'Document Redaction']);
   rows.push(['']);
   rows.push(['Criterion', 'LM Studio', 'LM Studio Notes', 'Claude.ai', 'Claude.ai Notes']);
-  const compTable = document.getElementById('comp-table');
-  if (compTable) {
-    compTable.querySelectorAll('tr').forEach(tr => {
-      rows.push(Array.from(tr.querySelectorAll('th,td')).map(c => '"' + c.textContent.replace(/"/g, '""') + '"'));
-    });
-  }
+  document.getElementById('comp-table').querySelectorAll('tr').forEach((tr, idx) => {
+    if (idx === 0) return;
+    rows.push(Array.from(tr.querySelectorAll('td')).map(c => '"' + c.textContent.replace(/"/g, '""') + '"'));
+  });
   rows.push(['']);
-  const winner = document.getElementById('winner-select')?.value || '';
-  const reasoning = document.getElementById('winner-reasoning')?.value || '';
-  rows.push(['Winner', winner]);
-  rows.push(['Reasoning', reasoning]);
+  rows.push(['Winner', document.getElementById('winner-select').value || '']);
+  rows.push(['Reasoning', '"' + (document.getElementById('winner-reasoning').value || '').replace(/"/g, '""') + '"']);
   const csv = rows.map(r => Array.isArray(r) ? r.join(',') : r).join('\n');
   const a = document.createElement('a');
   a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = 'ho1-sample-results.csv';
+  a.download = 'ho1-sample-04-results.csv';
   a.click();
 }
-
 </script>
 </body>
 </html>
