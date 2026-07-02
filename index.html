@@ -1,83 +1,127 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HO1: LLM Evaluation Report — Starter</title>
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#F8F9FA; color:#1a1a2e; }
-    header { background:#1D4ED8; color:#fff; padding:40px 32px 32px; }
-    .badge { font-size:12px; font-weight:700; letter-spacing:.08em; opacity:.75; text-transform:uppercase; margin-bottom:8px; }
-    h1 { font-size:26px; font-weight:800; margin-bottom:6px; }
-    header p { font-size:14px; opacity:.85; max-width:620px; line-height:1.6; }
-    .starter-bar { background:#FEF3C7; border-left:4px solid #D97706; padding:14px 20px; margin:24px 32px; border-radius:4px; font-size:14px; color:#92400E; line-height:1.6; }
-    .starter-bar strong { color:#92400E; }
-    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; padding:0 32px 40px; }
-    .card { background:#fff; border-radius:10px; box-shadow:0 1px 6px rgba(0,0,0,.08); overflow:hidden; }
-    .card-top { background:#1D4ED8; padding:12px 16px; display:flex; align-items:center; gap:10px; }
-    .num { background:rgba(255,255,255,.25); color:#fff; font-weight:800; font-size:12px; border-radius:20px; padding:2px 9px; }
-    .card-top h3 { color:#fff; font-size:14px; font-weight:700; }
-    .card-body { padding:16px; }
-    .card-body p { font-size:13px; color:#4B5563; line-height:1.6; margin-bottom:14px; }
-    .todo-badge { display:inline-block; background:#FEF3C7; color:#92400E; font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px; margin-bottom:12px; }
-    .btn { display:inline-flex; align-items:center; gap:6px; padding:8px 14px; background:#1D4ED8; color:#fff; text-decoration:none; border-radius:6px; font-size:13px; font-weight:600; }
-    footer { text-align:center; padding:24px; color:#9CA3AF; font-size:13px; border-top:1px solid #E5E7EB; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HO1 — LLM Evaluation Report (Starter) · ForgeMind AI</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root{
+    --pageBg:#F7F7F3; --headerBg:#0F0F10; --headerText:#F5F5F2; --headerMuted:#A1A1AA;
+    --headerBorder:rgba(255,255,255,.12); --cardBg:#fff; --border:#E5E5E0;
+    --text:#111; --textSec:#6B7280; --textMuted:#999; --primary:#dc2626; --primaryHover:#b91c1c;
+    --hover:#EFEEE6; --green:#0F6E56; --purple:#534AB7; --amber:#854F0B;
+    --shadowSm:0 1px 2px rgba(0,0,0,.08); --shadowMd:0 8px 24px rgba(0,0,0,.06);
+    --font:'DM Sans',system-ui,sans-serif; --mono:'DM Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{font-family:var(--font);background:var(--pageBg);color:var(--text);}
+  a{color:inherit;}
+  /* dark header */
+  header{height:56px;background:var(--headerBg);color:var(--headerText);display:flex;align-items:center;
+    padding:0 20px;position:sticky;top:0;z-index:10;border-bottom:1px solid var(--headerBorder);}
+  .wordmark{font-weight:900;font-size:16px;letter-spacing:.02em;display:flex;align-items:center;gap:2px;}
+  .wordmark .badge{background:var(--primary);color:#fff;padding:1px 6px;border-radius:5px;margin-left:2px;font-weight:800;}
+  .header-right{margin-left:auto;color:var(--headerMuted);font-size:12px;font-weight:500;display:flex;align-items:center;gap:8px;}
+  .header-right .dot{width:6px;height:6px;border-radius:99px;background:var(--green);}
+  /* layout */
+  .wrap{max-width:960px;margin:0 auto;padding:32px 24px 64px;}
+  /* hero */
+  .eyebrow{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--primary);}
+  h1{font-size:30px;font-weight:700;margin:8px 0 14px;letter-spacing:-.01em;}
+  .pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+  .pill{font-size:11px;font-weight:600;padding:4px 10px;border-radius:99px;font-family:var(--mono);}
+  .pill.wk{background:#E7F0FE;color:#1877F2;} .pill.mod{background:#EEEDFE;color:#3C3489;}
+  .pill.fmt{background:#E1F5EE;color:#0F6E56;} .pill.kind{background:#FAEEDA;color:#854F0B;}
+  /* card */
+  .card{background:var(--cardBg);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadowSm);padding:20px;}
+  .done{display:flex;align-items:flex-start;gap:12px;margin-bottom:28px;}
+  .done .ic{width:34px;height:34px;border-radius:8px;background:#FCEBEB;color:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .done .cap{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--textMuted);}
+  .done .val{font-size:15px;font-weight:600;margin-top:3px;}
+  .section-h{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:600;margin:34px 0 14px;}
+  .section-h svg{color:var(--primary);}
+  .sub{font-size:13px;color:var(--textSec);margin:-8px 0 16px;}
+  /* sample grid */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .sample{background:var(--cardBg);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadowSm);
+    padding:16px;display:flex;flex-direction:column;gap:8px;transition:box-shadow .15s,transform .15s;}
+  .sample:hover{box-shadow:var(--shadowMd);transform:translateY(-1px);}
+  .sample .num{font-family:var(--mono);font-size:11px;font-weight:500;color:#fff;background:var(--primary);
+    width:22px;height:22px;border-radius:99px;display:flex;align-items:center;justify-content:center;}
+  .sample p{font-size:13px;line-height:1.5;color:var(--text);margin:0;}
+  .sample .succ{font-size:12px;color:var(--green);font-weight:500;}
+  /* steps */
+  .steps{counter-reset:s;display:flex;flex-direction:column;gap:10px;}
+  .step{display:flex;gap:12px;align-items:flex-start;}
+  .step .n{counter-increment:s;font-family:var(--mono);font-size:12px;font-weight:500;color:var(--primary);
+    border:1.5px solid var(--border);border-radius:99px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .step .n::before{content:counter(s);}
+  .step p{font-size:13.5px;line-height:1.5;margin:2px 0;}
+  /* tip */
+  .tip{background:#FDF6F6;border:1px solid #F3C6C6;border-radius:8px;padding:16px 18px;margin-top:22px;}
+  .tip .th{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;color:var(--primary);margin-bottom:6px;}
+  .tip ul{margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--textSec);line-height:1.6;}
+  code{font-family:var(--mono);font-size:12px;background:#F1F0EA;padding:1px 5px;border-radius:4px;}
+  footer{border-top:1px solid var(--border);margin-top:40px;padding-top:18px;font-size:12px;color:var(--textMuted);font-family:var(--mono);text-align:center;}
+  @media(max-width:680px){.grid{grid-template-columns:1fr;} h1{font-size:24px;}}
+  a.sample{text-decoration:none;}
+</style>
 </head>
 <body>
   <header>
-    <div class="badge">HO1 · Forgemind AI Claude Course · Starter Template</div>
-    <h1>LLM Evaluation Report</h1>
-    <p>Your starting point. Pick ONE sample below, read the problem statement, and run it on two local models in LM Studio — 100% offline.</p>
+    <span class="wordmark">FORGE<span class="badge">COURSE</span></span>
+    <span class="header-right"><span class="dot"></span>ForgeMind AI · Hands-On Portfolio</span>
   </header>
-  <div class="starter-bar">
-    <strong>This is the starter branch.</strong> Every sample is ready to use — the example prompts are filled in.
-    Run each on two local models, score them, and write your recommendation. For the polished reference, switch to the <code>main</code> branch.
-  </div>
-  <div class="grid">
 
-    <div class="card">
-      <div class="card-top"><span class="num">Sample 1</span><h3>support tickets</h3></div>
-      <div class="card-body">
-        <span class="todo-badge">⬜ Not started</span>
-        <p>Triage a support ticket (category + urgency) and draft a reply — compare two local models on accuracy, tokens/sec, size and RAM.</p>
-        <a href="./samples/sample-01/" class="btn">Start here →</a>
+  <div class="wrap">
+    <div class="eyebrow">Hands-On 1 · Week 1 · Module M4 — Local AI · Starter</div>
+    <h1>LLM Evaluation Report</h1>
+    <div class="pills">
+      <span class="pill wk">Week 1</span>
+      <span class="pill mod">M4 · Local AI</span>
+      <span class="pill fmt">Solo</span>
+      <span class="pill kind">Starter</span>
+    </div>
+
+    <div class="tip">
+      <div class="th"><i data-lucide="rocket"></i> This is the starter branch</div>
+      <ul>
+        <li>Every sample is ready to use — the example prompts are already filled in.</li>
+        <li>Pick <b>one</b> sample below, run it on two local models in LM Studio, score them, and write your recommendation.</li>
+        <li>For the polished reference, switch to the <code>main</code> branch.</li>
+      </ul>
+    </div>
+
+    <div class="done card">
+      <div class="ic"><i data-lucide="target"></i></div>
+      <div>
+        <div class="cap">Done when</div>
+        <div class="val">A reproducible two-local-model eval with a data-backed recommendation.</div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-top"><span class="num">Sample 2</span><h3>invoice extraction</h3></div>
-      <div class="card-body">
-        <span class="todo-badge">⬜ Not started</span>
-        <p>Pull the date, vendor and total from a messy invoice as clean JSON — score both local models field by field.</p>
-        <a href="./samples/sample-02/" class="btn">Start here →</a>
-      </div>
+
+    <div class="section-h"><i data-lucide="list-checks"></i> Pick a sample to start</div>
+    <div class="sub">Choose one real use-case — click a card to open its ready-to-run scorecard.</div>
+    <div class="grid">
+      <a class="sample" href="./samples/sample-01/"><span class="num">1</span><p><b>Support Tickets.</b> Triage a support ticket (category + urgency) and draft a reply — compare two local models on accuracy, tokens/sec, size and RAM.</p><span class="succ">✓ a data-backed pick for the team laptop</span></a>
+      <a class="sample" href="./samples/sample-02/"><span class="num">2</span><p><b>Invoice Extraction.</b> Pull the date, vendor and total from a messy invoice as clean JSON — score both local models field by field.</p><span class="succ">✓ which local model is accurate enough and light enough</span></a>
+      <a class="sample" href="./samples/sample-03/"><span class="num">3</span><p><b>Meeting Notes.</b> Turn a meeting transcript into an action-item list with owners — compare which local model is usable, and how fast.</p><span class="succ">✓ the quality-vs-speed trade-off you measured</span></a>
+      <a class="sample" href="./samples/sample-04/"><span class="num">4</span><p><b>Document Redaction.</b> Mask names, addresses and IDs while keeping medical details — count what each local model missed, and its RAM use.</p><span class="succ">✓ which on-device model is reliable enough to ship</span></a>
+      <a class="sample" href="./samples/sample-05/"><span class="num">5</span><p><b>Email Drafting.</b> Draft a first-reply email and rate tone and accuracy — recommend the local model with the best quality per compute.</p><span class="succ">✓ the best local model for the compute it needs</span></a>
     </div>
-    <div class="card">
-      <div class="card-top"><span class="num">Sample 3</span><h3>meeting notes</h3></div>
-      <div class="card-body">
-        <span class="todo-badge">⬜ Not started</span>
-        <p>Turn a meeting transcript into an action-item list with owners — compare which local model is usable, and how fast.</p>
-        <a href="./samples/sample-03/" class="btn">Start here →</a>
-      </div>
+
+    <div class="section-h"><i data-lucide="git-branch"></i> How to use this repo</div>
+    <div class="steps card">
+      <div class="step"><span class="n"></span><p>Click <b>Use this template</b> to create your own copy.</p></div>
+      <div class="step"><span class="n"></span><p>Build your chosen sample — the prompts are ready to use; run both models in LM Studio and fill the results table.</p></div>
+      <div class="step"><span class="n"></span><p>Replace this README with what you built, the models you compared, and your recommendation.</p></div>
     </div>
-    <div class="card">
-      <div class="card-top"><span class="num">Sample 4</span><h3>document redaction</h3></div>
-      <div class="card-body">
-        <span class="todo-badge">⬜ Not started</span>
-        <p>Mask names, addresses and IDs while keeping medical details — count what each local model missed, and its RAM use.</p>
-        <a href="./samples/sample-04/" class="btn">Start here →</a>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-top"><span class="num">Sample 5</span><h3>email drafting</h3></div>
-      <div class="card-body">
-        <span class="todo-badge">⬜ Not started</span>
-        <p>Draft a first-reply email and rate tone and accuracy — recommend the local model with the best quality per compute.</p>
-        <a href="./samples/sample-05/" class="btn">Start here →</a>
-      </div>
-    </div>
+
+    <footer>HO1 · Solo · ForgeMind AI — AI Productivity Essentials · Module M4 (Week 1)</footer>
   </div>
-  <footer>Forgemind AI · Claude Course · HO1 · <a href="https://github.com/Forgemind-git/ho1-llm-eval" style="color:#1D4ED8">github.com/Forgemind-git/ho1-llm-eval</a></footer>
+  <script>lucide.createIcons();</script>
 </body>
 </html>

@@ -1,139 +1,197 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sample 03 — Meeting Notes | HO1</title>
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#F8F9FA; color:#1a1a2e; }
-    :root { --color:#1D4ED8; }
-    header { background:var(--color); color:#fff; padding:36px 32px 28px; }
-    header .back { font-size:13px; opacity:.85; text-decoration:none; color:#fff; display:inline-flex; align-items:center; gap:6px; margin-bottom:14px; }
-    header .back:hover { opacity:1; }
-    header .badge { font-size:12px; font-weight:700; letter-spacing:.08em; opacity:.8; text-transform:uppercase; margin-bottom:6px; }
-    header h1 { font-size:24px; font-weight:800; margin-bottom:6px; }
-    header p { font-size:14px; opacity:.9; max-width:660px; line-height:1.6; }
-    .container { max-width:880px; margin:0 auto; padding:32px 24px 60px; }
-    .section { background:#fff; border-radius:10px; box-shadow:0 1px 6px rgba(0,0,0,.08); padding:24px 28px; margin-bottom:24px; }
-    .section h2 { font-size:16px; font-weight:700; color:var(--color); margin-bottom:16px; border-bottom:2px solid #EEF2FF; padding-bottom:10px; }
-    .nokey { background:#ECFDF5; border-left:4px solid #059669; padding:10px 16px; border-radius:4px; font-size:13px; color:#065F46; margin-bottom:16px; font-weight:600; }
-    .steps { font-size:14px; color:#374151; line-height:1.8; padding-left:20px; }
-    .steps li { margin-bottom:4px; }
-    .prompt-box { position:relative; background:#0f172a; color:#e2e8f0; padding:16px 18px; border-radius:8px; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:13px; line-height:1.6; white-space:pre-wrap; }
-    .copy-btn { position:absolute; top:10px; right:10px; background:var(--color); color:#fff; border:none; border-radius:6px; padding:5px 12px; font-size:12px; font-weight:600; cursor:pointer; }
-    .truth { font-size:13px; color:#065F46; background:#ECFDF5; border-radius:6px; padding:10px 14px; margin-top:14px; }
-    .hint { font-size:13px; color:#6B7280; margin-bottom:14px; line-height:1.6; }
-    textarea { width:100%; border:1px solid #D1D5DB; border-radius:6px; padding:12px 14px; font-size:13px; font-family:inherit; color:#374151; line-height:1.6; resize:vertical; }
-    textarea:focus { outline:2px solid var(--color); border-color:var(--color); }
-    .model-tabs { display:flex; gap:10px; margin-bottom:16px; }
-    .model-tab { flex:1; text-align:center; padding:8px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; border:2px solid #E5E7EB; background:#fff; color:#6B7280; }
-    .model-tab.active { background:var(--color); color:#fff; border-color:var(--color); }
-    .scorecard { display:grid; gap:16px; }
-    .criterion { border:1px solid #E5E7EB; border-radius:8px; padding:14px 18px; }
-    .criterion-label { font-size:13px; font-weight:600; color:#111827; margin-bottom:10px; }
-    .radio-group { display:flex; gap:8px; flex-wrap:wrap; }
-    .radio-group label { display:flex; align-items:center; gap:5px; font-size:13px; color:#374151; cursor:pointer; background:#F3F4F6; padding:5px 12px; border-radius:20px; border:1px solid #E5E7EB; }
-    .radio-group input[type=radio] { accent-color:var(--color); }
-    .radio-group label:has(input:checked) { background:#EEF2FF; border-color:var(--color); color:var(--color); font-weight:600; }
-    .score-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-top:8px; padding-top:16px; border-top:2px solid #E5E7EB; }
-    .score-display { font-size:22px; font-weight:800; color:var(--color); }
-    .score-display span { font-size:13px; font-weight:400; color:#6B7280; }
-    .metrics { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-    .metric-card { border:1px solid #E5E7EB; border-radius:8px; padding:14px 18px; }
-    .metric-card h3 { font-size:13px; color:var(--color); margin-bottom:12px; }
-    .metric-field { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px; }
-    .metric-field label { font-size:12.5px; color:#374151; }
-    .metric-field input { width:110px; border:1px solid #D1D5DB; border-radius:6px; padding:6px 10px; font-size:13px; font-family:inherit; }
-    .metric-field input:focus { outline:2px solid var(--color); border-color:var(--color); }
-    .winner-select { width:100%; padding:10px 14px; border:1px solid #D1D5DB; border-radius:6px; font-size:14px; color:#374151; margin-bottom:14px; }
-    .dl-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:var(--color); color:#fff; border:none; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer; margin-top:16px; }
-    .dl-btn:hover { opacity:.88; }
-    table.comp-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:12px; }
-    .comp-table th { background:#1e293b; color:#fff; padding:10px 14px; text-align:left; }
-    .comp-table td { padding:10px 14px; border-bottom:1px solid #E5E7EB; color:#374151; }
-    .comp-table td:first-child { font-weight:600; color:#111827; }
-    @media(max-width:580px){ .metrics{ grid-template-columns:1fr; } }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HO1 — Sample 03 · Meeting Notes · ForgeMind AI</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root{
+    --pageBg:#F7F7F3; --headerBg:#0F0F10; --headerText:#F5F5F2; --headerMuted:#A1A1AA;
+    --headerBorder:rgba(255,255,255,.12); --cardBg:#fff; --border:#E5E5E0;
+    --text:#111; --textSec:#6B7280; --textMuted:#999; --primary:#dc2626; --primaryHover:#b91c1c;
+    --hover:#EFEEE6; --green:#0F6E56; --purple:#534AB7; --amber:#854F0B;
+    --shadowSm:0 1px 2px rgba(0,0,0,.08); --shadowMd:0 8px 24px rgba(0,0,0,.06);
+    --font:'DM Sans',system-ui,sans-serif; --mono:'DM Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{font-family:var(--font);background:var(--pageBg);color:var(--text);}
+  a{color:inherit;}
+  /* dark header */
+  header{height:56px;background:var(--headerBg);color:var(--headerText);display:flex;align-items:center;
+    padding:0 20px;position:sticky;top:0;z-index:10;border-bottom:1px solid var(--headerBorder);}
+  .wordmark{font-weight:900;font-size:16px;letter-spacing:.02em;display:flex;align-items:center;gap:2px;}
+  .wordmark .badge{background:var(--primary);color:#fff;padding:1px 6px;border-radius:5px;margin-left:2px;font-weight:800;}
+  .header-right{margin-left:auto;color:var(--headerMuted);font-size:12px;font-weight:500;display:flex;align-items:center;gap:8px;}
+  .header-right .dot{width:6px;height:6px;border-radius:99px;background:var(--green);}
+  /* layout */
+  .wrap{max-width:960px;margin:0 auto;padding:32px 24px 64px;}
+  /* hero */
+  .eyebrow{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--primary);}
+  h1{font-size:30px;font-weight:700;margin:8px 0 14px;letter-spacing:-.01em;}
+  .pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+  .pill{font-size:11px;font-weight:600;padding:4px 10px;border-radius:99px;font-family:var(--mono);}
+  .pill.wk{background:#E7F0FE;color:#1877F2;} .pill.mod{background:#EEEDFE;color:#3C3489;}
+  .pill.fmt{background:#E1F5EE;color:#0F6E56;} .pill.kind{background:#FAEEDA;color:#854F0B;}
+  /* card */
+  .card{background:var(--cardBg);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadowSm);padding:20px;}
+  .done{display:flex;align-items:flex-start;gap:12px;margin-bottom:28px;}
+  .done .ic{width:34px;height:34px;border-radius:8px;background:#FCEBEB;color:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .done .cap{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--textMuted);}
+  .done .val{font-size:15px;font-weight:600;margin-top:3px;}
+  .section-h{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:600;margin:34px 0 14px;}
+  .section-h svg{color:var(--primary);}
+  .sub{font-size:13px;color:var(--textSec);margin:-8px 0 16px;}
+  /* sample grid */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .sample{background:var(--cardBg);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadowSm);
+    padding:16px;display:flex;flex-direction:column;gap:8px;transition:box-shadow .15s,transform .15s;}
+  .sample:hover{box-shadow:var(--shadowMd);transform:translateY(-1px);}
+  .sample .num{font-family:var(--mono);font-size:11px;font-weight:500;color:#fff;background:var(--primary);
+    width:22px;height:22px;border-radius:99px;display:flex;align-items:center;justify-content:center;}
+  .sample p{font-size:13px;line-height:1.5;color:var(--text);margin:0;}
+  .sample .succ{font-size:12px;color:var(--green);font-weight:500;}
+  /* steps */
+  .steps{counter-reset:s;display:flex;flex-direction:column;gap:10px;}
+  .step{display:flex;gap:12px;align-items:flex-start;}
+  .step .n{counter-increment:s;font-family:var(--mono);font-size:12px;font-weight:500;color:var(--primary);
+    border:1.5px solid var(--border);border-radius:99px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .step .n::before{content:counter(s);}
+  .step p{font-size:13.5px;line-height:1.5;margin:2px 0;}
+  /* tip */
+  .tip{background:#FDF6F6;border:1px solid #F3C6C6;border-radius:8px;padding:16px 18px;margin-top:22px;}
+  .tip .th{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;color:var(--primary);margin-bottom:6px;}
+  .tip ul{margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--textSec);line-height:1.6;}
+  code{font-family:var(--mono);font-size:12px;background:#F1F0EA;padding:1px 5px;border-radius:4px;}
+  footer{border-top:1px solid var(--border);margin-top:40px;padding-top:18px;font-size:12px;color:var(--textMuted);font-family:var(--mono);text-align:center;}
+  @media(max-width:680px){.grid{grid-template-columns:1fr;} h1{font-size:24px;}}
+  /* --- functional scorecard, Forge-themed --- */
+  .back{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;color:var(--textSec);text-decoration:none;margin-bottom:16px;}
+  .back:hover{color:var(--primary);}
+  .section{margin-bottom:22px;}
+  .section > h2{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:600;margin:0 0 14px;}
+  .section > h2 svg{color:var(--primary);width:18px;height:18px;}
+  .nokey{display:flex;align-items:center;gap:8px;background:#E1F5EE;border:1px solid #B8E0D2;color:var(--green);padding:10px 14px;border-radius:8px;font-size:12.5px;font-weight:500;margin-bottom:16px;font-family:var(--mono);}
+  .steps-ol{font-size:13.5px;color:var(--text);line-height:1.8;padding-left:20px;margin:0;}
+  .steps-ol li{margin-bottom:4px;}
+  .hint{font-size:12.5px;color:var(--textSec);margin-bottom:14px;line-height:1.6;}
+  .prompt-box{position:relative;background:#0F0F10;color:#E5E5E0;padding:16px 18px;border-radius:8px;font-family:var(--mono);font-size:12.5px;line-height:1.6;white-space:pre-wrap;}
+  .copy-btn{position:absolute;top:10px;right:10px;background:var(--primary);color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font);}
+  .copy-btn:hover{background:var(--primaryHover);}
+  .truth{font-size:12.5px;color:var(--green);background:#E1F5EE;border:1px solid #B8E0D2;border-radius:8px;padding:10px 14px;margin-top:14px;}
+  textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13px;font-family:var(--font);color:var(--text);line-height:1.6;resize:vertical;background:#fff;}
+  textarea:focus{outline:2px solid var(--primary);border-color:var(--primary);}
+  .model-tabs{display:flex;gap:10px;margin-bottom:16px;}
+  .model-tab{flex:1;text-align:center;padding:8px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--textSec);font-family:var(--mono);}
+  .model-tab.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+  .scorecard{display:grid;gap:16px;}
+  .criterion{border:1px solid var(--border);border-radius:8px;padding:14px 18px;}
+  .criterion-label{font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px;}
+  .radio-group{display:flex;gap:8px;flex-wrap:wrap;}
+  .radio-group label{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--text);cursor:pointer;background:var(--hover);padding:5px 12px;border-radius:20px;border:1px solid var(--border);}
+  .radio-group input[type=radio]{accent-color:var(--primary);}
+  .radio-group label:has(input:checked){background:#FCEBEB;border-color:var(--primary);color:var(--primary);font-weight:600;}
+  .score-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:8px;padding-top:16px;border-top:1px solid var(--border);}
+  .score-display{font-size:22px;font-weight:700;color:var(--primary);font-family:var(--mono);}
+  .score-display span{font-size:12px;font-weight:400;color:var(--textSec);}
+  .metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .metric-card{border:1px solid var(--border);border-radius:8px;padding:14px 18px;}
+  .metric-card h3{font-size:13px;color:var(--primary);margin:0 0 12px;font-family:var(--mono);}
+  .metric-field{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;}
+  .metric-field label{font-size:12.5px;color:var(--text);}
+  .metric-field input{width:110px;border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px;font-family:var(--font);}
+  .metric-field input:focus{outline:2px solid var(--primary);border-color:var(--primary);}
+  .winner-select{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);margin-bottom:14px;font-family:var(--font);background:#fff;}
+  .dl-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin-top:16px;font-family:var(--font);}
+  .dl-btn:hover{background:var(--primaryHover);}
+  table.comp-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px;}
+  .comp-table th{background:#0F0F10;color:#fff;padding:10px 14px;text-align:left;font-weight:600;}
+  .comp-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text);}
+  .comp-table td:first-child{font-weight:600;color:var(--text);}
+  @media(max-width:680px){.metrics{grid-template-columns:1fr;}}
+</style>
 </head>
 <body>
-<header>
-  <a href="../../index.html" class="back">&larr; Back to HO1</a>
-  <div class="badge">HO1 &middot; Sample 03</div>
-  <h1>Meeting Notes</h1>
-  <p>A side-by-side test of two local models on meeting notes. You give the same transcript to both models in LM Studio, then score which produced the more usable action-item list with the right owners — and weigh that against the tokens/sec each one managed.</p>
-</header>
+  <header>
+    <span class="wordmark">FORGE<span class="badge">COURSE</span></span>
+    <span class="header-right"><span class="dot"></span>ForgeMind AI · Hands-On Portfolio</span>
+  </header>
 
-<div class="container">
+  <div class="wrap">
+    <a href="../../index.html" class="back"><i data-lucide="arrow-left"></i> Back to HO1</a>
+    <div class="eyebrow">Hands-On 1 · Sample 03 · Local AI</div>
+    <h1>Meeting Notes</h1>
+    <div class="sub">A side-by-side test of two local models on meeting notes. You give the same transcript to both models in LM Studio, then score which produced the more usable action-item list with the right owners — and weigh that against the tokens/sec each one managed.</div>
 
-  <div class="section">
-    <h2>Run it in LM Studio (two local models)</h2>
-    <div class="nokey">100% offline. No API key, no cloud, no Claude — everything runs on your machine.</div>
-    <ol class="steps">
-      <li>Open <strong>LM Studio</strong> and download two local models — e.g. Llama 3.2 1B and Qwen 2.5 3B.</li>
-      <li>Load <strong>Model A</strong>, paste the prompt below, run it, and copy the reply. Note its <strong>tokens/sec</strong>, <strong>size (GB)</strong> and <strong>RAM</strong>.</li>
-      <li>Load <strong>Model B</strong> and do the same with the <strong>same</strong> prompt.</li>
-      <li>Paste both replies below, score them, and enter the tokens/sec, size and RAM you noted.</li>
-      <li>Download the table, then fill in <strong>RECOMMENDATION.md</strong> with your pick.</li>
-    </ol>
-  </div>
+    <div class="card section">
+      <h2><i data-lucide="cpu"></i> Run it in LM Studio (two local models)</h2>
+      <div class="nokey"><i data-lucide="wifi-off"></i> 100% offline. No API key, no cloud, no Claude — everything runs on your machine.</div>
+      <ol class="steps-ol">
+        <li>Open <strong>LM Studio</strong> and download two local models — e.g. Llama 3.2 1B and Qwen 2.5 3B.</li>
+        <li>Load <strong>Model A</strong>, paste the prompt below, run it, and copy the reply. Note its <strong>tokens/sec</strong>, <strong>size (GB)</strong> and <strong>RAM</strong>.</li>
+        <li>Load <strong>Model B</strong> and do the same with the <strong>same</strong> prompt.</li>
+        <li>Paste both replies below, score them, and enter the tokens/sec, size and RAM you noted.</li>
+        <li>Download the table, then fill in <strong>RECOMMENDATION.md</strong> with your pick.</li>
+      </ol>
+    </div>
 
-  <div class="section">
-    <h2>The example prompt</h2>
-    <p class="hint">Copy this exactly into <strong>both</strong> models so the comparison is fair.</p>
-    <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt()">Copy</button><span id="prompt-text">You are a meeting assistant. Read the transcript below and return an action-item list. Use exactly this format, one item per line:
+    <div class="card section">
+      <h2><i data-lucide="terminal"></i> The example prompt</h2>
+      <p class="hint">Copy this exactly into <strong>both</strong> models so the comparison is fair.</p>
+      <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt()">Copy</button><span id="prompt-text">You are a meeting assistant. Read the transcript below and return an action-item list. Use exactly this format, one item per line:
 - Owner | Task | Due date
 
 Transcript:
 &quot;Sarah (PM): The dashboard needs to ship by the end of March. Dev (Lead): That&#x27;s about four weeks of work, but I need the design specs first. Ana (Design): I can have the mockups ready by Friday. Dev: Great — I&#x27;ll also need the API docs. Sarah: I&#x27;ll chase the backend team for those by end of day today. Let&#x27;s lock the launch date as March 28.&quot;</span></div>
-    <div class="truth">Owners that must appear: Ana (mockups, Friday), Sarah (chase API docs, today), Dev (build dashboard, March 28).</div>
-  </div>
+      <div class="truth">Owners that must appear: Ana (mockups, Friday), Sarah (chase API docs, today), Dev (build dashboard, March 28).</div>
+    </div>
 
-  <div class="section">
-    <h2>Model A — paste its reply</h2>
-    <p class="hint">The first local model (e.g. Llama 3.2 1B).</p>
-    <textarea rows="7" placeholder="Paste Model A's reply here"></textarea>
-  </div>
+    <div class="card section">
+      <h2><i data-lucide="file-text"></i> Model A — paste its reply</h2>
+      <p class="hint">The first local model (e.g. Llama 3.2 1B).</p>
+      <textarea rows="7" placeholder="Paste Model A's reply here"></textarea>
+    </div>
 
-  <div class="section">
-    <h2>Model B — paste its reply</h2>
-    <p class="hint">The second local model (e.g. Qwen 2.5 3B).</p>
-    <textarea rows="7" placeholder="Paste Model B's reply here"></textarea>
-  </div>
+    <div class="card section">
+      <h2><i data-lucide="file-text"></i> Model B — paste its reply</h2>
+      <p class="hint">The second local model (e.g. Qwen 2.5 3B).</p>
+      <textarea rows="7" placeholder="Paste Model B's reply here"></textarea>
+    </div>
 
-  <div class="section">
-    <h2>Score accuracy</h2>
-    <div class="model-tabs">
+    <div class="card section">
+      <h2><i data-lucide="list-checks"></i> Score accuracy</h2><div class="model-tabs">
       <div class="model-tab active" id="tab-a" onclick="switchTab('a')">Model A</div>
       <div class="model-tab" id="tab-b" onclick="switchTab('b')">Model B</div>
     </div>
     <div id="scorecard-a" class="scorecard" data-model="a" style="display:grid"><div class="criterion"><div class="criterion-label">1. All action items captured</div><div class="radio-group"><label><input type="radio" name="a-c1" value="No" data-w="0" onchange="calcScore('a')"> No</label><label><input type="radio" name="a-c1" value="Yes" data-w="1" onchange="calcScore('a')"> Yes</label></div></div><div class="criterion"><div class="criterion-label">2. Owners correct</div><div class="radio-group"><label><input type="radio" name="a-c2" value="No" data-w="0" onchange="calcScore('a')"> No</label><label><input type="radio" name="a-c2" value="Yes" data-w="1" onchange="calcScore('a')"> Yes</label></div></div><div class="criterion"><div class="criterion-label">3. Format usable</div><div class="radio-group"><label><input type="radio" name="a-c3" value="1" data-w="0.2" onchange="calcScore('a')"> 1</label><label><input type="radio" name="a-c3" value="2" data-w="0.4" onchange="calcScore('a')"> 2</label><label><input type="radio" name="a-c3" value="3" data-w="0.6" onchange="calcScore('a')"> 3</label><label><input type="radio" name="a-c3" value="4" data-w="0.8" onchange="calcScore('a')"> 4</label><label><input type="radio" name="a-c3" value="5" data-w="1" onchange="calcScore('a')"> 5</label></div></div><div class="score-row"><div>Accuracy</div><div class="score-display" id="a-total">0% <span>accuracy</span></div></div></div>
     <div id="scorecard-b" class="scorecard" data-model="b" style="display:none"><div class="criterion"><div class="criterion-label">1. All action items captured</div><div class="radio-group"><label><input type="radio" name="b-c1" value="No" data-w="0" onchange="calcScore('b')"> No</label><label><input type="radio" name="b-c1" value="Yes" data-w="1" onchange="calcScore('b')"> Yes</label></div></div><div class="criterion"><div class="criterion-label">2. Owners correct</div><div class="radio-group"><label><input type="radio" name="b-c2" value="No" data-w="0" onchange="calcScore('b')"> No</label><label><input type="radio" name="b-c2" value="Yes" data-w="1" onchange="calcScore('b')"> Yes</label></div></div><div class="criterion"><div class="criterion-label">3. Format usable</div><div class="radio-group"><label><input type="radio" name="b-c3" value="1" data-w="0.2" onchange="calcScore('b')"> 1</label><label><input type="radio" name="b-c3" value="2" data-w="0.4" onchange="calcScore('b')"> 2</label><label><input type="radio" name="b-c3" value="3" data-w="0.6" onchange="calcScore('b')"> 3</label><label><input type="radio" name="b-c3" value="4" data-w="0.8" onchange="calcScore('b')"> 4</label><label><input type="radio" name="b-c3" value="5" data-w="1" onchange="calcScore('b')"> 5</label></div></div><div class="score-row"><div>Accuracy</div><div class="score-display" id="b-total">0% <span>accuracy</span></div></div></div>
-  </div>
+    </div>
 
-  <div class="section">
-    <h2>Performance metrics</h2>
-    <p class="hint">Read these off LM Studio and type them in — they flow into the comparison table.</p>
-    <div class="metrics">
-      <div class="metric-card">
-        <h3>Model A</h3>
-        <div class="metric-field"><label>Tokens/sec</label><input type="number" step="0.1" id="a_tps" oninput="fillTable()"></div>
-        <div class="metric-field"><label>Model size (GB)</label><input type="number" step="0.1" id="a_size" oninput="fillTable()"></div>
-        <div class="metric-field"><label>RAM (GB)</label><input type="number" step="0.1" id="a_ram" oninput="fillTable()"></div>
-      </div>
-      <div class="metric-card">
-        <h3>Model B</h3>
-        <div class="metric-field"><label>Tokens/sec</label><input type="number" step="0.1" id="b_tps" oninput="fillTable()"></div>
-        <div class="metric-field"><label>Model size (GB)</label><input type="number" step="0.1" id="b_size" oninput="fillTable()"></div>
-        <div class="metric-field"><label>RAM (GB)</label><input type="number" step="0.1" id="b_ram" oninput="fillTable()"></div>
+    <div class="card section">
+      <h2><i data-lucide="gauge"></i> Performance metrics</h2>
+      <p class="hint">Read these off LM Studio and type them in — they flow into the comparison table.</p>
+      <div class="metrics">
+        <div class="metric-card">
+          <h3>Model A</h3>
+          <div class="metric-field"><label>Tokens/sec</label><input type="number" step="0.1" id="a_tps" oninput="fillTable()"></div>
+          <div class="metric-field"><label>Model size (GB)</label><input type="number" step="0.1" id="a_size" oninput="fillTable()"></div>
+          <div class="metric-field"><label>RAM (GB)</label><input type="number" step="0.1" id="a_ram" oninput="fillTable()"></div>
+        </div>
+        <div class="metric-card">
+          <h3>Model B</h3>
+          <div class="metric-field"><label>Tokens/sec</label><input type="number" step="0.1" id="b_tps" oninput="fillTable()"></div>
+          <div class="metric-field"><label>Model size (GB)</label><input type="number" step="0.1" id="b_size" oninput="fillTable()"></div>
+          <div class="metric-field"><label>RAM (GB)</label><input type="number" step="0.1" id="b_ram" oninput="fillTable()"></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="section">
-    <h2>Comparison table</h2>
-    <p class="hint">Fills in automatically as you score above and enter the metrics.</p>
-    <table class="comp-table" id="comp-table">
+    <div class="card section">
+      <h2><i data-lucide="bar-chart-3"></i> Comparison table</h2>
+      <p class="hint">Fills in automatically as you score above and enter the metrics.</p>
+      <table class="comp-table" id="comp-table">
       <tr><th>Metric</th><th>Model A</th><th>Model B</th></tr>
       <tr><td>All action items captured</td><td id="t-a-1"></td><td id="t-b-1"></td></tr><tr><td>Owners correct</td><td id="t-a-2"></td><td id="t-b-2"></td></tr><tr><td>Format usable</td><td id="t-a-3"></td><td id="t-b-3"></td></tr>
       <tr><td><strong>Accuracy (rubric)</strong></td><td id="t-a-acc">—</td><td id="t-b-acc">—</td></tr>
@@ -141,26 +199,28 @@ Transcript:
       <tr><td>Model size (GB)</td><td id="t-a-size">—</td><td id="t-b-size">—</td></tr>
       <tr><td>RAM (GB)</td><td id="t-a-ram">—</td><td id="t-b-ram">—</td></tr>
     </table>
+    </div>
+
+    <div class="card section">
+      <h2><i data-lucide="award"></i> Recommendation</h2>
+      <p class="hint">Based on your scores, which <strong>local</strong> model would you run — and why?</p>
+      <select class="winner-select" id="winner-select">
+        <option value="">-- pick a local model --</option>
+        <option value="Model A">Model A</option>
+        <option value="Model B">Model B</option>
+        <option value="Tie">Tie / depends</option>
+      </select>
+      <textarea id="winner-reasoning" rows="4" placeholder="One paragraph: name the local model and justify it with the numbers — accuracy vs tokens/sec vs size/RAM."></textarea>
+      <br>
+      <button class="dl-btn" onclick="downloadCSV()"><i data-lucide="download"></i> Download results as CSV</button>
+    </div>
+
+    <p class="hint" style="text-align:center">Optional: <code>main.py</code> runs this same comparison automatically against LM Studio's local server. It is 100% offline — no API key — and not required for the course.</p>
+
+    <footer>HO1 · Solo · ForgeMind AI — AI Productivity Essentials · Module M4 (Week 1)</footer>
   </div>
 
-  <div class="section">
-    <h2>Recommendation</h2>
-    <p class="hint">Based on your scores, which <strong>local</strong> model would you run — and why?</p>
-    <select class="winner-select" id="winner-select">
-      <option value="">-- pick a local model --</option>
-      <option value="Model A">Model A</option>
-      <option value="Model B">Model B</option>
-      <option value="Tie">Tie / depends</option>
-    </select>
-    <textarea id="winner-reasoning" rows="4" placeholder="One paragraph: name the local model and justify it with the numbers — accuracy vs tokens/sec vs size/RAM."></textarea>
-    <br>
-    <button class="dl-btn" onclick="downloadCSV()">Download results as CSV</button>
-  </div>
-
-  <p class="hint" style="text-align:center">Optional: <code>main.py</code> runs this same comparison automatically against LM Studio's local server. It is 100% offline — no API key — and not required for the course.</p>
-</div>
-
-<script>
+  <script>
 const NCRIT = 3;
 function copyPrompt() {
   const t = document.getElementById('prompt-text').innerText;
@@ -214,5 +274,6 @@ function downloadCSV() {
   a.click();
 }
 </script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>
