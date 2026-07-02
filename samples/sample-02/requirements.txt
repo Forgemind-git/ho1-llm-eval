@@ -1,5 +1,3 @@
-# OPTIONAL — these are only needed to run main.py (the optional automation).
-# You do NOT need them for the course: the hands-on uses your Claude.ai subscription.
-anthropic
+# OPTIONAL — only needed to run main.py (the optional convenience script).
+# The hands-on itself is 100% offline and no-code: run both models in LM Studio.
 requests
-tabulate

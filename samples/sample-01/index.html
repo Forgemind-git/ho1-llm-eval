@@ -13,8 +13,8 @@
     header .back:hover { opacity:1; }
     header .badge { font-size:12px; font-weight:700; letter-spacing:.08em; opacity:.8; text-transform:uppercase; margin-bottom:6px; }
     header h1 { font-size:24px; font-weight:800; margin-bottom:6px; }
-    header p { font-size:14px; opacity:.9; max-width:640px; line-height:1.6; }
-    .container { max-width:860px; margin:0 auto; padding:32px 24px 60px; }
+    header p { font-size:14px; opacity:.9; max-width:660px; line-height:1.6; }
+    .container { max-width:880px; margin:0 auto; padding:32px 24px 60px; }
     .section { background:#fff; border-radius:10px; box-shadow:0 1px 6px rgba(0,0,0,.08); padding:24px 28px; margin-bottom:24px; }
     .section h2 { font-size:16px; font-weight:700; color:var(--color); margin-bottom:16px; border-bottom:2px solid #EEF2FF; padding-bottom:10px; }
     .nokey { background:#ECFDF5; border-left:4px solid #059669; padding:10px 16px; border-radius:4px; font-size:13px; color:#065F46; margin-bottom:16px; font-weight:600; }
@@ -22,6 +22,7 @@
     .steps li { margin-bottom:4px; }
     .prompt-box { position:relative; background:#0f172a; color:#e2e8f0; padding:16px 18px; border-radius:8px; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:13px; line-height:1.6; white-space:pre-wrap; }
     .copy-btn { position:absolute; top:10px; right:10px; background:var(--color); color:#fff; border:none; border-radius:6px; padding:5px 12px; font-size:12px; font-weight:600; cursor:pointer; }
+    .truth { font-size:13px; color:#065F46; background:#ECFDF5; border-radius:6px; padding:10px 14px; margin-top:14px; }
     .hint { font-size:13px; color:#6B7280; margin-bottom:14px; line-height:1.6; }
     textarea { width:100%; border:1px solid #D1D5DB; border-radius:6px; padding:12px 14px; font-size:13px; font-family:inherit; color:#374151; line-height:1.6; resize:vertical; }
     textarea:focus { outline:2px solid var(--color); border-color:var(--color); }
@@ -35,17 +36,24 @@
     .radio-group label { display:flex; align-items:center; gap:5px; font-size:13px; color:#374151; cursor:pointer; background:#F3F4F6; padding:5px 12px; border-radius:20px; border:1px solid #E5E7EB; }
     .radio-group input[type=radio] { accent-color:var(--color); }
     .radio-group label:has(input:checked) { background:#EEF2FF; border-color:var(--color); color:var(--color); font-weight:600; }
-    .score-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-top:20px; padding-top:16px; border-top:2px solid #E5E7EB; }
+    .score-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-top:8px; padding-top:16px; border-top:2px solid #E5E7EB; }
     .score-display { font-size:22px; font-weight:800; color:var(--color); }
     .score-display span { font-size:13px; font-weight:400; color:#6B7280; }
+    .metrics { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .metric-card { border:1px solid #E5E7EB; border-radius:8px; padding:14px 18px; }
+    .metric-card h3 { font-size:13px; color:var(--color); margin-bottom:12px; }
+    .metric-field { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px; }
+    .metric-field label { font-size:12.5px; color:#374151; }
+    .metric-field input { width:110px; border:1px solid #D1D5DB; border-radius:6px; padding:6px 10px; font-size:13px; font-family:inherit; }
+    .metric-field input:focus { outline:2px solid var(--color); border-color:var(--color); }
     .winner-select { width:100%; padding:10px 14px; border:1px solid #D1D5DB; border-radius:6px; font-size:14px; color:#374151; margin-bottom:14px; }
     .dl-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:var(--color); color:#fff; border:none; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer; margin-top:16px; }
     .dl-btn:hover { opacity:.88; }
     table.comp-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:12px; }
     .comp-table th { background:#1e293b; color:#fff; padding:10px 14px; text-align:left; }
     .comp-table td { padding:10px 14px; border-bottom:1px solid #E5E7EB; color:#374151; }
-    .comp-table td[contenteditable=true] { background:#FAFAFA; min-width:80px; }
-    .comp-table td[contenteditable=true]:focus { background:#EEF2FF; outline:2px solid var(--color); }
+    .comp-table td:first-child { font-weight:600; color:#111827; }
+    @media(max-width:580px){ .metrics{ grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -53,112 +61,153 @@
   <a href="../../index.html" class="back">&larr; Back to HO1</a>
   <div class="badge">HO1 &middot; Sample 01</div>
   <h1>Support Tickets</h1>
-  <p>A simple side-by-side comparison: you give the same support ticket to a free local model (in LM Studio) and to Claude.ai, then score which one writes the better, kinder, more accurate reply. By the end you&#x27;ll know whether the free local model is good enough — or whether Claude is worth it.</p>
+  <p>A side-by-side test of two local models. You give the same support ticket to both models in LM Studio, then score whether each got the category and urgency right, note each model’s tokens/sec and size, and decide which one to run on the team laptop.</p>
 </header>
 
 <div class="container">
 
   <div class="section">
-    <h2>Use it with your Claude.ai subscription</h2>
-    <div class="nokey">No API key needed. Just your normal Claude.ai login.</div>
-    <ol class="steps"><li>Open LM Studio and load any small model (e.g. Llama 3.2). Paste the example prompt below into its chat. Copy the reply.</li><li>Open Claude.ai (your subscription). Paste the same prompt. Copy Claude&#x27;s reply.</li><li>Open index.html from this folder in your browser. Paste both replies in and score each using the rubric.</li><li>The page totals the scores so you can see which model won.</li></ol>
+    <h2>Run it in LM Studio (two local models)</h2>
+    <div class="nokey">100% offline. No API key, no cloud, no Claude — everything runs on your machine.</div>
+    <ol class="steps">
+      <li>Open <strong>LM Studio</strong> and download two local models — e.g. Llama 3.2 1B and Qwen 2.5 3B.</li>
+      <li>Load <strong>Model A</strong>, paste the prompt below, run it, and copy the reply. Note its <strong>tokens/sec</strong>, <strong>size (GB)</strong> and <strong>RAM</strong>.</li>
+      <li>Load <strong>Model B</strong> and do the same with the <strong>same</strong> prompt.</li>
+      <li>Paste both replies below, score them, and enter the tokens/sec, size and RAM you noted.</li>
+      <li>Download the table, then fill in <strong>RECOMMENDATION.md</strong> with your pick.</li>
+    </ol>
   </div>
 
   <div class="section">
     <h2>The example prompt</h2>
-    <p class="hint">Copy this exactly into <strong>both</strong> LM Studio and Claude.ai so the comparison is fair.</p>
-    <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt()">Copy</button><span id="prompt-text">You are a customer support agent for a SaaS product. Read the support ticket below and do two things:
-1. Triage it — give a Category (Billing / Technical / Account / Feature request) and a Priority (Low / Medium / High).
-2. Draft a warm, professional reply that acknowledges the problem and gives a clear next step.
+    <p class="hint">Copy this exactly into <strong>both</strong> models so the comparison is fair.</p>
+    <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt()">Copy</button><span id="prompt-text">You are a customer support triage assistant. Read the ticket below and reply in exactly this format:
+Category: &lt;Billing | Technical | Account | Feature request&gt;
+Urgency: &lt;Low | Medium | High&gt;
+Reply: &lt;a warm 2-3 sentence reply that acknowledges the problem and gives a clear next step&gt;
 
 Ticket:
 &quot;I upgraded to the Premium plan 5 days ago but my dashboard still shows Free. I&#x27;ve been charged twice and I&#x27;m losing money. Please fix this today.&quot;</span></div>
+    <div class="truth">Correct answer: Category = Billing, Urgency = High.</div>
   </div>
 
   <div class="section">
-    <h2>LM Studio — paste its reply</h2>
-    <p class="hint">Run the prompt in LM Studio, then paste the full response here before scoring.</p>
-    <textarea rows="8" placeholder="Paste the LM Studio reply here"></textarea>
+    <h2>Model A — paste its reply</h2>
+    <p class="hint">The first local model (e.g. Llama 3.2 1B).</p>
+    <textarea rows="7" placeholder="Paste Model A's reply here"></textarea>
   </div>
 
   <div class="section">
-    <h2>Claude.ai — paste its reply</h2>
-    <p class="hint">Run the same prompt in Claude.ai, then paste the full response here before scoring.</p>
-    <textarea rows="8" placeholder="Paste the Claude.ai reply here"></textarea>
+    <h2>Model B — paste its reply</h2>
+    <p class="hint">The second local model (e.g. Qwen 2.5 3B).</p>
+    <textarea rows="7" placeholder="Paste Model B's reply here"></textarea>
   </div>
 
   <div class="section">
-    <h2>Score your results</h2>
+    <h2>Score accuracy</h2>
     <div class="model-tabs">
-      <div class="model-tab active" id="tab-lm" onclick="switchTab('lm')">LM Studio</div>
-      <div class="model-tab" id="tab-cl" onclick="switchTab('cl')">Claude.ai</div>
+      <div class="model-tab active" id="tab-a" onclick="switchTab('a')">Model A</div>
+      <div class="model-tab" id="tab-b" onclick="switchTab('b')">Model B</div>
     </div>
-    <div id="scorecard-lm" class="scorecard" data-model="lm"><div class="criterion"><div class="criterion-label">1. Tone &amp; empathy</div><div class="radio-group"><label><input type="radio" name="lm-c1" value="1" onchange="calcScore('lm')"> 1</label><label><input type="radio" name="lm-c1" value="2" onchange="calcScore('lm')"> 2</label><label><input type="radio" name="lm-c1" value="3" onchange="calcScore('lm')"> 3</label><label><input type="radio" name="lm-c1" value="4" onchange="calcScore('lm')"> 4</label><label><input type="radio" name="lm-c1" value="5" onchange="calcScore('lm')"> 5</label></div></div><div class="criterion"><div class="criterion-label">2. Issue correctly identified</div><div class="radio-group"><label><input type="radio" name="lm-c2" value="1" onchange="calcScore('lm')"> 1</label><label><input type="radio" name="lm-c2" value="2" onchange="calcScore('lm')"> 2</label><label><input type="radio" name="lm-c2" value="3" onchange="calcScore('lm')"> 3</label><label><input type="radio" name="lm-c2" value="4" onchange="calcScore('lm')"> 4</label><label><input type="radio" name="lm-c2" value="5" onchange="calcScore('lm')"> 5</label></div></div><div class="criterion"><div class="criterion-label">3. Draft reply quality</div><div class="radio-group"><label><input type="radio" name="lm-c3" value="1" onchange="calcScore('lm')"> 1</label><label><input type="radio" name="lm-c3" value="2" onchange="calcScore('lm')"> 2</label><label><input type="radio" name="lm-c3" value="3" onchange="calcScore('lm')"> 3</label><label><input type="radio" name="lm-c3" value="4" onchange="calcScore('lm')"> 4</label><label><input type="radio" name="lm-c3" value="5" onchange="calcScore('lm')"> 5</label></div></div><div class="criterion"><div class="criterion-label">4. Latency feel</div><div class="radio-group"><label><input type="radio" name="lm-c4" value="Fast" onchange="calcScore('lm')"> Fast</label><label><input type="radio" name="lm-c4" value="Slow" onchange="calcScore('lm')"> Slow</label></div></div><div class="score-row"><div>LM Studio — criteria answered</div><div class="score-display" id="lm-total">0 / 4 <span>criteria answered</span></div></div></div>
-    <div id="scorecard-cl" class="scorecard" data-model="cl" style="display:none"><div class="criterion"><div class="criterion-label">1. Tone &amp; empathy</div><div class="radio-group"><label><input type="radio" name="cl-c1" value="1" onchange="calcScore('cl')"> 1</label><label><input type="radio" name="cl-c1" value="2" onchange="calcScore('cl')"> 2</label><label><input type="radio" name="cl-c1" value="3" onchange="calcScore('cl')"> 3</label><label><input type="radio" name="cl-c1" value="4" onchange="calcScore('cl')"> 4</label><label><input type="radio" name="cl-c1" value="5" onchange="calcScore('cl')"> 5</label></div></div><div class="criterion"><div class="criterion-label">2. Issue correctly identified</div><div class="radio-group"><label><input type="radio" name="cl-c2" value="1" onchange="calcScore('cl')"> 1</label><label><input type="radio" name="cl-c2" value="2" onchange="calcScore('cl')"> 2</label><label><input type="radio" name="cl-c2" value="3" onchange="calcScore('cl')"> 3</label><label><input type="radio" name="cl-c2" value="4" onchange="calcScore('cl')"> 4</label><label><input type="radio" name="cl-c2" value="5" onchange="calcScore('cl')"> 5</label></div></div><div class="criterion"><div class="criterion-label">3. Draft reply quality</div><div class="radio-group"><label><input type="radio" name="cl-c3" value="1" onchange="calcScore('cl')"> 1</label><label><input type="radio" name="cl-c3" value="2" onchange="calcScore('cl')"> 2</label><label><input type="radio" name="cl-c3" value="3" onchange="calcScore('cl')"> 3</label><label><input type="radio" name="cl-c3" value="4" onchange="calcScore('cl')"> 4</label><label><input type="radio" name="cl-c3" value="5" onchange="calcScore('cl')"> 5</label></div></div><div class="criterion"><div class="criterion-label">4. Latency feel</div><div class="radio-group"><label><input type="radio" name="cl-c4" value="Fast" onchange="calcScore('cl')"> Fast</label><label><input type="radio" name="cl-c4" value="Slow" onchange="calcScore('cl')"> Slow</label></div></div><div class="score-row"><div>Claude.ai — criteria answered</div><div class="score-display" id="cl-total">0 / 4 <span>criteria answered</span></div></div></div>
+    <div id="scorecard-a" class="scorecard" data-model="a" style="display:grid"><div class="criterion"><div class="criterion-label">1. Category correct</div><div class="radio-group"><label><input type="radio" name="a-c1" value="No" data-w="0" onchange="calcScore('a')"> No</label><label><input type="radio" name="a-c1" value="Yes" data-w="1" onchange="calcScore('a')"> Yes</label></div></div><div class="criterion"><div class="criterion-label">2. Urgency correct</div><div class="radio-group"><label><input type="radio" name="a-c2" value="No" data-w="0" onchange="calcScore('a')"> No</label><label><input type="radio" name="a-c2" value="Yes" data-w="1" onchange="calcScore('a')"> Yes</label></div></div><div class="criterion"><div class="criterion-label">3. Reply quality</div><div class="radio-group"><label><input type="radio" name="a-c3" value="1" data-w="0.2" onchange="calcScore('a')"> 1</label><label><input type="radio" name="a-c3" value="2" data-w="0.4" onchange="calcScore('a')"> 2</label><label><input type="radio" name="a-c3" value="3" data-w="0.6" onchange="calcScore('a')"> 3</label><label><input type="radio" name="a-c3" value="4" data-w="0.8" onchange="calcScore('a')"> 4</label><label><input type="radio" name="a-c3" value="5" data-w="1" onchange="calcScore('a')"> 5</label></div></div><div class="score-row"><div>Accuracy</div><div class="score-display" id="a-total">0% <span>accuracy</span></div></div></div>
+    <div id="scorecard-b" class="scorecard" data-model="b" style="display:none"><div class="criterion"><div class="criterion-label">1. Category correct</div><div class="radio-group"><label><input type="radio" name="b-c1" value="No" data-w="0" onchange="calcScore('b')"> No</label><label><input type="radio" name="b-c1" value="Yes" data-w="1" onchange="calcScore('b')"> Yes</label></div></div><div class="criterion"><div class="criterion-label">2. Urgency correct</div><div class="radio-group"><label><input type="radio" name="b-c2" value="No" data-w="0" onchange="calcScore('b')"> No</label><label><input type="radio" name="b-c2" value="Yes" data-w="1" onchange="calcScore('b')"> Yes</label></div></div><div class="criterion"><div class="criterion-label">3. Reply quality</div><div class="radio-group"><label><input type="radio" name="b-c3" value="1" data-w="0.2" onchange="calcScore('b')"> 1</label><label><input type="radio" name="b-c3" value="2" data-w="0.4" onchange="calcScore('b')"> 2</label><label><input type="radio" name="b-c3" value="3" data-w="0.6" onchange="calcScore('b')"> 3</label><label><input type="radio" name="b-c3" value="4" data-w="0.8" onchange="calcScore('b')"> 4</label><label><input type="radio" name="b-c3" value="5" data-w="1" onchange="calcScore('b')"> 5</label></div></div><div class="score-row"><div>Accuracy</div><div class="score-display" id="b-total">0% <span>accuracy</span></div></div></div>
+  </div>
+
+  <div class="section">
+    <h2>Performance metrics</h2>
+    <p class="hint">Read these off LM Studio and type them in — they flow into the comparison table.</p>
+    <div class="metrics">
+      <div class="metric-card">
+        <h3>Model A</h3>
+        <div class="metric-field"><label>Tokens/sec</label><input type="number" step="0.1" id="a_tps" oninput="fillTable()"></div>
+        <div class="metric-field"><label>Model size (GB)</label><input type="number" step="0.1" id="a_size" oninput="fillTable()"></div>
+        <div class="metric-field"><label>RAM (GB)</label><input type="number" step="0.1" id="a_ram" oninput="fillTable()"></div>
+      </div>
+      <div class="metric-card">
+        <h3>Model B</h3>
+        <div class="metric-field"><label>Tokens/sec</label><input type="number" step="0.1" id="b_tps" oninput="fillTable()"></div>
+        <div class="metric-field"><label>Model size (GB)</label><input type="number" step="0.1" id="b_size" oninput="fillTable()"></div>
+        <div class="metric-field"><label>RAM (GB)</label><input type="number" step="0.1" id="b_ram" oninput="fillTable()"></div>
+      </div>
+    </div>
   </div>
 
   <div class="section">
     <h2>Comparison table</h2>
-    <p class="hint">Scores fill in automatically as you select above. Click any notes cell to type observations.</p>
+    <p class="hint">Fills in automatically as you score above and enter the metrics.</p>
     <table class="comp-table" id="comp-table">
-      <tr><th>Criterion</th><th>LM Studio score</th><th>LM Studio notes</th><th>Claude.ai score</th><th>Claude.ai notes</th></tr>
-      <tr><td>Tone &amp; empathy</td><td contenteditable="true" id="t-lm-1"></td><td contenteditable="true"></td><td contenteditable="true" id="t-cl-1"></td><td contenteditable="true"></td></tr><tr><td>Issue correctly identified</td><td contenteditable="true" id="t-lm-2"></td><td contenteditable="true"></td><td contenteditable="true" id="t-cl-2"></td><td contenteditable="true"></td></tr><tr><td>Draft reply quality</td><td contenteditable="true" id="t-lm-3"></td><td contenteditable="true"></td><td contenteditable="true" id="t-cl-3"></td><td contenteditable="true"></td></tr><tr><td>Latency feel</td><td contenteditable="true" id="t-lm-4"></td><td contenteditable="true"></td><td contenteditable="true" id="t-cl-4"></td><td contenteditable="true"></td></tr><tr><td><strong>Answered</strong></td><td id="t-lm-sum">—</td><td contenteditable="true"></td><td id="t-cl-sum">—</td><td contenteditable="true"></td></tr>
+      <tr><th>Metric</th><th>Model A</th><th>Model B</th></tr>
+      <tr><td>Category correct</td><td id="t-a-1"></td><td id="t-b-1"></td></tr><tr><td>Urgency correct</td><td id="t-a-2"></td><td id="t-b-2"></td></tr><tr><td>Reply quality</td><td id="t-a-3"></td><td id="t-b-3"></td></tr>
+      <tr><td><strong>Accuracy (rubric)</strong></td><td id="t-a-acc">—</td><td id="t-b-acc">—</td></tr>
+      <tr><td>Tokens/sec</td><td id="t-a-tps">—</td><td id="t-b-tps">—</td></tr>
+      <tr><td>Model size (GB)</td><td id="t-a-size">—</td><td id="t-b-size">—</td></tr>
+      <tr><td>RAM (GB)</td><td id="t-a-ram">—</td><td id="t-b-ram">—</td></tr>
     </table>
   </div>
 
   <div class="section">
-    <h2>Winner</h2>
-    <p class="hint">Based on your scores, which model wins for this use case?</p>
+    <h2>Recommendation</h2>
+    <p class="hint">Based on your scores, which <strong>local</strong> model would you run — and why?</p>
     <select class="winner-select" id="winner-select">
-      <option value="">-- pick a winner --</option>
-      <option value="LM Studio">LM Studio</option>
-      <option value="Claude.ai">Claude.ai</option>
-      <option value="Tie">Tie</option>
+      <option value="">-- pick a local model --</option>
+      <option value="Model A">Model A</option>
+      <option value="Model B">Model B</option>
+      <option value="Tie">Tie / depends</option>
     </select>
-    <textarea id="winner-reasoning" rows="4" placeholder="Explain your reasoning — think about quality, speed, and fit for the job."></textarea>
+    <textarea id="winner-reasoning" rows="4" placeholder="One paragraph: name the local model and justify it with the numbers — accuracy vs tokens/sec vs size/RAM."></textarea>
     <br>
     <button class="dl-btn" onclick="downloadCSV()">Download results as CSV</button>
   </div>
 
-  <p class="hint" style="text-align:center">Optional: <code>main.py</code> in this folder can run this same comparison automatically. It needs an Anthropic API key (separate from your Claude.ai subscription) and is not required for the course.</p>
+  <p class="hint" style="text-align:center">Optional: <code>main.py</code> runs this same comparison automatically against LM Studio's local server. It is 100% offline — no API key — and not required for the course.</p>
 </div>
 
 <script>
+const NCRIT = 3;
 function copyPrompt() {
   const t = document.getElementById('prompt-text').innerText;
   navigator.clipboard.writeText(t);
   const b = document.querySelector('.copy-btn'); b.textContent = 'Copied!'; setTimeout(() => b.textContent = 'Copy', 1500);
 }
 function switchTab(model) {
-  document.getElementById('scorecard-lm').style.display = model === 'lm' ? 'grid' : 'none';
-  document.getElementById('scorecard-cl').style.display = model === 'cl' ? 'grid' : 'none';
-  document.getElementById('tab-lm').className = 'model-tab' + (model === 'lm' ? ' active' : '');
-  document.getElementById('tab-cl').className = 'model-tab' + (model === 'cl' ? ' active' : '');
+  document.getElementById('scorecard-a').style.display = model === 'a' ? 'grid' : 'none';
+  document.getElementById('scorecard-b').style.display = model === 'b' ? 'grid' : 'none';
+  document.getElementById('tab-a').className = 'model-tab' + (model === 'a' ? ' active' : '');
+  document.getElementById('tab-b').className = 'model-tab' + (model === 'b' ? ' active' : '');
 }
 function calcScore(model) {
-  let answered = 0;
   const rows = document.querySelectorAll(`[data-model="${model}"] .criterion`);
+  let sum = 0, answered = 0;
   rows.forEach((row, i) => {
     const sel = row.querySelector('input[type=radio]:checked');
-    const cell = document.querySelector(`#t-${model}-${i+1}`);
-    if (sel) { answered++; if (cell) cell.textContent = sel.value; }
+    const cell = document.getElementById(`t-${model}-${i+1}`);
+    if (sel) { answered++; sum += parseFloat(sel.dataset.w); if (cell) cell.textContent = sel.value; }
   });
+  const pct = rows.length ? Math.round(100 * sum / rows.length) : 0;
   const totalEl = document.getElementById(`${model}-total`);
-  if (totalEl) totalEl.innerHTML = `${answered} / ${rows.length} <span>criteria answered</span>`;
-  const sumEl = document.getElementById(`t-${model}-sum`);
-  if (sumEl) sumEl.textContent = `${answered}/${rows.length}`;
+  if (totalEl) totalEl.innerHTML = `${pct}% <span>accuracy (${answered}/${rows.length} scored)</span>`;
+  const accCell = document.getElementById(`t-${model}-acc`);
+  if (accCell) accCell.textContent = answered ? `${pct}%` : '—';
+}
+function fillTable() {
+  ['a','b'].forEach(m => {
+    ['tps','size','ram'].forEach(k => {
+      const v = document.getElementById(`${m}_${k}`).value;
+      document.getElementById(`t-${m}-${k}`).textContent = v === '' ? '—' : v;
+    });
+  });
 }
 function downloadCSV() {
   const rows = [];
   rows.push(['Sample', 'Support Tickets']);
   rows.push(['']);
-  rows.push(['Criterion', 'LM Studio', 'LM Studio Notes', 'Claude.ai', 'Claude.ai Notes']);
+  rows.push(['Metric', 'Model A', 'Model B']);
   document.getElementById('comp-table').querySelectorAll('tr').forEach((tr, idx) => {
     if (idx === 0) return;
     rows.push(Array.from(tr.querySelectorAll('td')).map(c => '"' + c.textContent.replace(/"/g, '""') + '"'));
   });
   rows.push(['']);
-  rows.push(['Winner', document.getElementById('winner-select').value || '']);
+  rows.push(['Recommended local model', document.getElementById('winner-select').value || '']);
   rows.push(['Reasoning', '"' + (document.getElementById('winner-reasoning').value || '').replace(/"/g, '""') + '"']);
   const csv = rows.map(r => Array.isArray(r) ? r.join(',') : r).join('\n');
   const a = document.createElement('a');

@@ -1,16 +1,24 @@
 """
-HO1 Sample 05 — Email Drafting  (OPTIONAL automation)
+HO1 Sample 05 — Email Drafting  (OPTIONAL convenience script)
 ============================================================
-You do NOT need this file for the course.
+100% OFFLINE. No API key, no cloud, no Claude.
 
-The course uses your Claude.ai subscription — just follow the README:
-run the example prompt in LM Studio and in Claude.ai, then score in index.html.
-No API key needed for that path.
+The course's primary path is no-code: run the example prompt on TWO local models
+in the LM Studio chat UI, read off tokens/sec and model size, and fill in the
+results table in index.html. You do NOT need this script.
 
-This script is only for learners who later want to run the same comparison
-automatically. It calls a local model (LM Studio / Ollama) AND Claude via the
-Anthropic API. The API key is SEPARATE from your Claude.ai subscription and costs
-money — see the README section "Optional — automate it with the API (advanced)".
+This script is only an optional convenience. It sends the SAME prompt to two
+local models through LM Studio's local OpenAI-compatible server (no key) and
+prints a tokens/sec + accuracy comparison so you can reproduce the table.
+
+Setup:
+  1. In LM Studio, download the two models you want to compare.
+  2. LM Studio -> Developer (Local Server) tab -> Start Server.
+  3. pip install -r requirements.txt
+  4. cp .env.example .env   # set MODEL_A / MODEL_B to the exact model IDs
+  5. python main.py
+
+Model size (GB) and RAM are read from the LM Studio UI — add them to index.html.
 """
 
 import os
@@ -18,129 +26,92 @@ import time
 import json
 import requests
 
-try:
-    import anthropic
-except ImportError:
-    anthropic = None
-try:
-    from tabulate import tabulate
-except ImportError:
-    tabulate = None
+BASE_URL = os.environ.get("LMSTUDIO_BASE_URL", "http://localhost:1234/v1")
+MODEL_A = os.environ.get("MODEL_A", "llama-3.2-1b-instruct")
+MODEL_B = os.environ.get("MODEL_B", "qwen2.5-3b-instruct")
 
-# --- Configuration ---
-ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
-OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
-OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "llama3.2")
-CLAUDE_MODEL = "claude-haiku-4-5-20251001"
+PROMPT = """\
+You are a customer support agent for an online electronics store. Read the customer's email below and draft a warm, professional reply that acknowledges the problem, gives a clear next step, and sets a realistic expectation. Keep it under 150 words.
 
-PROMPT = 'You are a customer support agent for an online electronics store. Read the customer\'s email below and draft a warm, professional reply that acknowledges the problem, gives a clear next step, and sets a realistic expectation. Keep it under 150 words.\n\nCustomer email:\n"Hi, I ordered a wireless keyboard (order #ORD-5582) last Tuesday and it still hasn\'t arrived. The tracking page hasn\'t updated in three days. I need it for work — can you tell me where it is and when I\'ll get it?"'
-
-# Rough Claude Haiku pricing (USD per 1M tokens) — for the optional cost estimate only.
-CLAUDE_INPUT_COST_PER_1M = 1.00
-CLAUDE_OUTPUT_COST_PER_1M = 5.00
+Customer email:
+"Hi, I ordered a wireless keyboard (order #ORD-5582) last Tuesday and it still hasn't arrived. The tracking page hasn't updated in three days. I need it for work — can you tell me where it is and when I'll get it?"
+"""
 
 
-def call_ollama(prompt: str) -> dict:
-    print(f"[Local] Sending prompt to {OLLAMA_MODEL} ...")
-    url = f"{OLLAMA_BASE_URL}/api/generate"
-    payload = {"model": OLLAMA_MODEL, "prompt": prompt, "stream": False}
+def score(text):
+    t = (text or '').lower()
+    wc = len((text or '').split())
+    solution = any(w in t for w in ['track', 'deliver', 'order', 'ship', 'refund', 'replace'])
+    length_ok = 20 <= wc <= 170
+    tone = any(w in t for w in ['sorry', 'apolog', 'understand', 'appreciate', 'thank'])
+    good = sum([solution, length_ok, tone])
+    return {'Addresses issue': solution, 'Length appropriate': length_ok, 'Warm tone': tone, '_good': good, '_max': 3}
+
+
+def run_model(model: str) -> dict:
+    url = BASE_URL.rstrip("/") + "/chat/completions"
+    payload = {"model": model, "messages": [{"role": "user", "content": PROMPT}], "temperature": 0.2}
     start = time.time()
     try:
-        resp = requests.post(url, json=payload, timeout=180)
+        resp = requests.post(url, json=payload, timeout=300)
         resp.raise_for_status()
         data = resp.json()
-        elapsed = time.time() - start
-        print(f"[Local] Done in {elapsed:.2f}s.")
-        return {"text": data.get("response", ""), "elapsed": elapsed,
-                "output_tokens": data.get("eval_count", 0), "cost_usd": 0.0, "error": None}
     except requests.exceptions.ConnectionError:
-        msg = f"Cannot reach a local model at {OLLAMA_BASE_URL}. Start LM Studio's local server or run 'ollama serve'."
-        print(f"[Local] ERROR: {msg}")
-        return {"text": "", "elapsed": 0.0, "output_tokens": 0, "cost_usd": 0.0, "error": msg}
+        return {"error": f"Cannot reach LM Studio at {BASE_URL}. Open LM Studio -> Developer tab -> Start Server."}
     except Exception as exc:
-        print(f"[Local] ERROR: {exc}")
-        return {"text": "", "elapsed": 0.0, "output_tokens": 0, "cost_usd": 0.0, "error": str(exc)}
-
-
-def call_claude(prompt: str) -> dict:
-    print(f"[Claude] Sending prompt to {CLAUDE_MODEL} ...")
-    if anthropic is None:
-        return {"text": "", "elapsed": 0.0, "output_tokens": 0, "cost_usd": 0.0,
-                "error": "anthropic package not installed (pip install -r requirements.txt)"}
-    if not ANTHROPIC_API_KEY:
-        msg = "ANTHROPIC_API_KEY is not set. This optional script needs an API key (separate from Claude.ai)."
-        print(f"[Claude] {msg}")
-        return {"text": "", "elapsed": 0.0, "output_tokens": 0, "cost_usd": 0.0, "error": msg}
-    client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-    start = time.time()
-    try:
-        message = client.messages.create(
-            model=CLAUDE_MODEL, max_tokens=1024,
-            messages=[{"role": "user", "content": prompt}],
-        )
-        elapsed = time.time() - start
-        in_t = message.usage.input_tokens
-        out_t = message.usage.output_tokens
-        cost = in_t / 1_000_000 * CLAUDE_INPUT_COST_PER_1M + out_t / 1_000_000 * CLAUDE_OUTPUT_COST_PER_1M
-        print(f"[Claude] Done in {elapsed:.2f}s. Cost: ${cost:.6f}")
-        return {"text": message.content[0].text, "elapsed": elapsed,
-                "output_tokens": out_t, "cost_usd": cost, "error": None}
-    except Exception as exc:
-        print(f"[Claude] ERROR: {exc}")
-        return {"text": "", "elapsed": 0.0, "output_tokens": 0, "cost_usd": 0.0, "error": str(exc)}
-
-
-def score_response(text: str) -> dict:
-    """Simple, deterministic heuristics for the Email Drafting task (max 4)."""
-    if not text:
-        return {"acknowledges": 0, "next_step": 0, "expectation": 0, "length_ok": 0, "total": 0}
-    lower = text.lower(); wc = len(text.split())
-    ack = 1 if any(w in lower for w in ["keyboard","order","ord-5582","tracking","delay"]) else 0
-    next_step = 1 if any(w in lower for w in ["will","check","investigate","update","contact","look into"]) else 0
-    expectation = 1 if any(w in lower for w in ["hours","day","days","shortly","by ","within"]) else 0
-    length_ok = 1 if 40 <= wc <= 200 else 0
-    return {"acknowledges": ack, "next_step": next_step, "expectation": expectation,
-            "length_ok": length_ok, "total": ack+next_step+expectation+length_ok}
-
-
-def print_comparison(local_r, claude_r, local_s, claude_s):
-    print("\n" + "=" * 64)
-    print("  BENCHMARK RESULTS — Email Drafting")
-    print("=" * 64)
-    rows = [
-        ["Response time (s)", f"{local_r['elapsed']:.2f}", f"{claude_r['elapsed']:.2f}"],
-        ["Estimated cost (USD)", "$0.00 (local)", f"${claude_r['cost_usd']:.6f}"],
-    ]
-    for k in [k for k in local_s if k != "total"]:
-        rows.append([k.replace("_", " ").title(), local_s[k], claude_s[k]])
-    rows.append(["TOTAL SCORE (/4)", local_s["total"], claude_s["total"]])
-    rows.append(["Error", local_r["error"] or "None", claude_r["error"] or "None"])
-    headers = ["Metric", f"Local ({OLLAMA_MODEL})", f"Claude ({CLAUDE_MODEL})"]
-    if tabulate:
-        print(tabulate(rows, headers=headers, tablefmt="grid"))
-    else:
-        print("\t".join(headers))
-        for r in rows:
-            print("\t".join(str(c) for c in r))
-    print("\n--- Local response ---\n" + (local_r["text"] or "(none)"))
-    print("\n--- Claude response ---\n" + (claude_r["text"] or "(none)"))
+        return {"error": str(exc)}
+    elapsed = time.time() - start
+    text = (data.get("choices") or [{}])[0].get("message", {}).get("content", "")
+    out_tokens = (data.get("usage") or {}).get("completion_tokens") or len(text.split())
+    tps = out_tokens / elapsed if elapsed > 0 else 0.0
+    return {"text": text, "elapsed": elapsed, "tokens": out_tokens, "tps": tps, "error": None}
 
 
 def main():
-    print("HO1 Sample 05 — Email Drafting (optional benchmark)")
-    print(f"Prompt: {PROMPT[:70]}...\n")
-    local_r = call_ollama(PROMPT)
-    claude_r = call_claude(PROMPT)
-    local_s = score_response(local_r["text"])
-    claude_s = score_response(claude_r["text"])
-    print_comparison(local_r, claude_r, local_s, claude_s)
+    print(f"HO1 Sample 05 — Email Drafting")
+    print(f"Comparing two LOCAL models via LM Studio ({BASE_URL})\n")
+    results = {}
+    for label, model in [("A", MODEL_A), ("B", MODEL_B)]:
+        print(f"[Model {label}] {model} ...")
+        res = run_model(model)
+        if res.get("error"):
+            print(f"  ERROR: {res['error']}")
+            res["score"] = {}
+        else:
+            res["score"] = score(res["text"])
+            pct = round(100 * res["score"]["_good"] / res["score"]["_max"])
+            print(f"  {res['tps']:.1f} tok/s · {res['tokens']} tokens · {res['elapsed']:.1f}s · accuracy {pct}%")
+        res["model"] = model
+        results[label] = res
+
+    a, b = results["A"], results["B"]
+
+    def col(res, key, fmt="{}"):
+        return "n/a" if res.get("error") else fmt.format(res[key])
+
+    def acc(res):
+        if res.get("error"):
+            return "n/a"
+        return f"{round(100 * res['score']['_good'] / res['score']['_max'])}%"
+
+    print("\n" + "=" * 58)
+    print(f"{'Metric':<24}{'Model A':>17}{'Model B':>17}")
+    print("-" * 58)
+    print(f"{'Accuracy (rubric)':<24}{acc(a):>17}{acc(b):>17}")
+    print(f"{'Tokens/sec':<24}{col(a, 'tps', '{:.1f}'):>17}{col(b, 'tps', '{:.1f}'):>17}")
+    print(f"{'Response time (s)':<24}{col(a, 'elapsed', '{:.1f}'):>17}{col(b, 'elapsed', '{:.1f}'):>17}")
+    print(f"{'Model size (GB)':<24}{'from LM Studio UI':>17}{'from LM Studio UI':>17}")
+    print(f"{'RAM (GB)':<24}{'from LM Studio UI':>17}{'from LM Studio UI':>17}")
+    print("=" * 58)
+    print("\nAdd Model size (GB) and RAM from the LM Studio UI into index.html to complete the table.")
+
     out = {"sample": "05-email-drafting", "prompt": PROMPT,
-           "local": {"model": OLLAMA_MODEL, **local_r, "score": local_s},
-           "claude": {"model": CLAUDE_MODEL, **claude_r, "score": claude_s}}
+           "model_a": {"model": a["model"], **{k: v for k, v in a.items() if k != "model"}},
+           "model_b": {"model": b["model"], **{k: v for k, v in b.items() if k != "model"}}}
     path = os.path.join(os.path.dirname(__file__), "results.json")
-    with open(path, "w") as f:
-        json.dump(out, f, indent=2)
-    print(f"\nResults saved to {path}")
+    with open(path, "w") as fh:
+        json.dump(out, fh, indent=2, default=str)
+    print(f"Results saved to {path}")
 
 
 if __name__ == "__main__":

@@ -11,7 +11,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 header { background: var(--color); color:#fff; padding:40px 32px 32px; }
 header .badge { font-size:13px; font-weight:700; letter-spacing:.08em; opacity:.8; text-transform:uppercase; margin-bottom:8px; }
 header h1 { font-size:28px; font-weight:800; margin-bottom:8px; }
-header p { font-size:15px; opacity:.85; max-width:640px; line-height:1.6; }
+header p { font-size:15px; opacity:.85; max-width:660px; line-height:1.6; }
 .sub-bar { background:#fff; border-left:4px solid var(--color); padding:14px 20px; margin:24px 32px; border-radius:4px; font-size:14px; color:#374151; line-height:1.6; box-shadow:0 1px 4px rgba(0,0,0,.07); }
 .sub-bar strong { color:var(--color); }
 .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; padding:0 32px 40px; }
@@ -33,11 +33,11 @@ footer { text-align:center; padding:24px; color:#9CA3AF; font-size:13px; border-
 <header>
   <div class="badge">HO1</div>
   <h1>LLM Evaluation Report</h1>
-  <p>A structured framework for comparing a local model (LM Studio) vs Claude.ai side-by-side.</p>
+  <p>Compare <strong>two local models</strong> head-to-head in LM Studio — on accuracy, tokens/sec, model size and RAM — and recommend which one to run on-device.</p>
 </header>
 
 <div class="sub-bar">
-  <strong>Claude.ai subscription required</strong> — No API key. Run each test prompt in LM Studio AND in Claude.ai chat. Score both using the rubric. Fill in the included comparison table.
+  <strong>100% offline — no API key, no cloud, no Claude.</strong> Run each test prompt on two local models in LM Studio, score both with the rubric, and fill in the comparison table (accuracy · tokens/sec · size · RAM).
 </div>
 
 <div class="grid">
@@ -48,7 +48,7 @@ footer { text-align:center; padding:24px; color:#9CA3AF; font-size:13px; border-
       <h3>Support Tickets</h3>
     </div>
     <div class="card-body">
-      <p>Triage a support ticket and draft a warm reply — compare a free local model vs Claude.ai.</p>
+      <p>Triage a support ticket (category + urgency) and draft a reply — compare two local models on accuracy, tokens/sec, size and RAM.</p>
       <a href="./samples/sample-01/" class="btn">View Sample →</a>
     </div>
   </div>
@@ -59,7 +59,7 @@ footer { text-align:center; padding:24px; color:#9CA3AF; font-size:13px; border-
       <h3>Invoice Extraction</h3>
     </div>
     <div class="card-body">
-      <p>Pull the vendor, date, total and line items out of a messy invoice as clean JSON.</p>
+      <p>Pull the date, vendor and total from a messy invoice as clean JSON — score both local models field by field.</p>
       <a href="./samples/sample-02/" class="btn">View Sample →</a>
     </div>
   </div>
@@ -70,7 +70,7 @@ footer { text-align:center; padding:24px; color:#9CA3AF; font-size:13px; border-
       <h3>Meeting Notes</h3>
     </div>
     <div class="card-body">
-      <p>Turn a meeting transcript into a summary, decisions and an action-item list with owners.</p>
+      <p>Turn a meeting transcript into an action-item list with owners — compare which local model is usable, and how fast.</p>
       <a href="./samples/sample-03/" class="btn">View Sample →</a>
     </div>
   </div>
@@ -81,7 +81,7 @@ footer { text-align:center; padding:24px; color:#9CA3AF; font-size:13px; border-
       <h3>Document Redaction</h3>
     </div>
     <div class="card-body">
-      <p>Redact every piece of personal information while keeping the medical details intact.</p>
+      <p>Mask names, addresses and IDs while keeping medical details — count what each local model missed, and its RAM use.</p>
       <a href="./samples/sample-04/" class="btn">View Sample →</a>
     </div>
   </div>
@@ -92,7 +92,7 @@ footer { text-align:center; padding:24px; color:#9CA3AF; font-size:13px; border-
       <h3>Email Drafting</h3>
     </div>
     <div class="card-body">
-      <p>Draft a first-reply email to a customer and score which model needs the fewest edits.</p>
+      <p>Draft a first-reply email and rate tone and accuracy — recommend the local model with the best quality per compute.</p>
       <a href="./samples/sample-05/" class="btn">View Sample →</a>
     </div>
   </div>
